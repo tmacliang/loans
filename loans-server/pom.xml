@@ -1,0 +1,61 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<parent>
+		<groupId>org.kelex.loans</groupId>
+		<artifactId>loans</artifactId>
+		<version>0.0.1</version>
+	</parent>
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>org.kelex.loans</groupId>
+	<artifactId>loans-server</artifactId>
+	<version>0.0.1</version>
+	<packaging>war</packaging>
+	<name>loans-server</name>
+	<description>Demo project for Spring Boot</description>
+
+	<properties>
+		<mybatis.spring.boot.version>1.3.0</mybatis.spring.boot.version>
+	</properties>
+
+	<dependencies>
+		<!--servlet-->
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>javax.servlet-api</artifactId>
+			<version>${servlet.version}</version>
+			<scope>provided</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.kelex.loans</groupId>
+			<artifactId>loans-webmvc</artifactId>
+			<version>0.0.1</version>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<sourceDirectory>src/main/java</sourceDirectory>
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>true</filtering>
+				<includes>
+					<include>**/*.xml</include>
+					<include>**/*.yml</include>
+					<include>**/*.properties</include>
+				</includes>
+			</resource>
+		</resources>
+		<plugins>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+				<configuration>
+					<executable>true</executable>
+					<fork>true</fork>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+</project>

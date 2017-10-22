@@ -1,0 +1,134 @@
+{
+	"id": "887177c2-617f-4151-c04b-d3bbf55bb835",
+	"name": "loans-dev",
+	"description": "",
+	"order": [
+		"ab233aed-eca7-e6e3-237e-34b03fde45a9",
+		"5ec27bfd-456f-8774-20a1-0bcbf4d915e1",
+		"ad1d4de8-56de-184b-e166-a8c1bcd720aa",
+		"acf80809-a101-6891-edc1-77306bb1d995"
+	],
+	"folders": [],
+	"folders_order": [],
+	"timestamp": 1504006256252,
+	"owner": 0,
+	"public": false,
+	"requests": [
+		{
+			"id": "5ec27bfd-456f-8774-20a1-0bcbf4d915e1",
+			"headers": "Content-Type: application/json;charset=UTF-8\n",
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"value": "application/json;charset=UTF-8",
+					"description": "",
+					"enabled": true
+				}
+			],
+			"url": "http://127.0.0.1:8080/service/account/open",
+			"queryParams": [],
+			"preRequestScript": null,
+			"pathVariables": {},
+			"pathVariableData": [],
+			"method": "POST",
+			"data": [],
+			"dataMode": "raw",
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1507720396118,
+			"name": "开户",
+			"description": "",
+			"collectionId": "887177c2-617f-4151-c04b-d3bbf55bb835",
+			"responses": [],
+			"rawModeData": "{\n\t\"generic\":{\n\t\t\"version\":\"v1\"\n\t},\n\t\"data\":{\n\t\t\"currencyCode\":\"CNY\",\n\t\t\"productCode\":\"QBAO\",\n\t\t\"moduleCode\":\"LIFE\",\n\t\t\"memberId\":\"2017083112000000010004\",\n\t\t\"memberType\":\"CUST\",\n\t\t\"mobilePhone\":\"13718656984\"\n\t}\n}"
+		},
+		{
+			"id": "ab233aed-eca7-e6e3-237e-34b03fde45a9",
+			"headers": "Content-Type: application/json;charset=UTF-8\n",
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"value": "application/json;charset=UTF-8",
+					"description": ""
+				}
+			],
+			"url": "http://127.0.0.1:8080/test/findAll",
+			"queryParams": [],
+			"preRequestScript": null,
+			"pathVariables": {},
+			"pathVariableData": [],
+			"method": "POST",
+			"data": [],
+			"dataMode": "raw",
+			"version": 2,
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1504006376346,
+			"name": "测试",
+			"description": "",
+			"collectionId": "887177c2-617f-4151-c04b-d3bbf55bb835",
+			"responses": [],
+			"rawModeData": "{\n\t\"query\":{\n\t\t\"identity\":798103449399867408\t\n\t},\n\t\"data\":{\n\t},\n\t\"pageable\":{\n\t\t\"limit\": 30\n\t\t, \"page\": 1\n\t\t, \"start\": 0\n\t}\n}"
+		},
+		{
+			"id": "acf80809-a101-6891-edc1-77306bb1d995",
+			"headers": "Content-Type: application/json;charset=UTF-8\n",
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"value": "application/json;charset=UTF-8",
+					"description": "",
+					"enabled": true
+				}
+			],
+			"url": "http://127.0.0.1:8080/service/transaction/paymentOrder",
+			"queryParams": [],
+			"preRequestScript": null,
+			"pathVariables": {},
+			"pathVariableData": [],
+			"method": "POST",
+			"data": [],
+			"dataMode": "raw",
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1508384782163,
+			"name": "还款",
+			"description": "",
+			"collectionId": "887177c2-617f-4151-c04b-d3bbf55bb835",
+			"responses": [],
+			"rawModeData": "{\n\t\"generic\":{\n\t\t\"version\":\"v1\"\n\t},\n\t\"data\":{\n        \"accountId\": 5949547112563712,\n        \"paymentOrderNo\":\"prepaymentOrderNo-20170101-001\",\n        \"paymentType\": \"PAMT\",\n        \"paymentAmount\": 100,\n        \"currencyCode\": \"CNY\"\n\t}\n}"
+		},
+		{
+			"id": "ad1d4de8-56de-184b-e166-a8c1bcd720aa",
+			"headers": "Content-Type: application/json;charset=UTF-8\n",
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"value": "application/json;charset=UTF-8",
+					"description": "",
+					"enabled": true
+				}
+			],
+			"url": "http://127.0.0.1:8080/service/transaction/retail",
+			"queryParams": [],
+			"preRequestScript": null,
+			"pathVariables": {},
+			"pathVariableData": [],
+			"method": "POST",
+			"data": [],
+			"dataMode": "raw",
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1506670898504,
+			"name": "消费",
+			"description": "",
+			"collectionId": "887177c2-617f-4151-c04b-d3bbf55bb835",
+			"responses": [],
+			"rawModeData": "{\n\t\"generic\":{\n\t\t\"version\":\"v1\"\n\t},\n\t\"data\":{\n        \"accountId\": 5949547112563712,\n        \"merchantName\": \"McDonald\",\n        \"commodityCode\": \"10000000000\",\n        \"retailOrderNo\": \"4008001000000001\",\n        \"retailAmount\":10000,\n        \"totalTerms\": 6,\n        \"currencyCode\": \"CNY\",\n        \"txnDesc\": null\n\t}\n}"
+		}
+	]
+}

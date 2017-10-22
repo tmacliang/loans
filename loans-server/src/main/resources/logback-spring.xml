@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<configuration scan="true">
+
+    <springProperty scope="context" name="path" source="log.path"></springProperty>
+    <springProperty scope="context" name="level" source="log.level"></springProperty>
+
+    <contextListener class="ch.qos.logback.classic.jul.LevelChangePropagator">
+        <resetJUL>true</resetJUL>
+    </contextListener>
+
+    <appender name="ROLLINGFILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${path}/loans-server/loans-server/.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <maxHistory>90</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <charset>utf-8</charset>
+            <Pattern>[%d{yyyy-MM-dd HH:mm:ss.SSS}][%p][%X{sessionId}][%X{traceId}][%X{cip}:%X{cPort}][%X{sip}:%X{sPort}][PID${server.id}|${spring.profiles.active}][%X{userId}][%t|%logger{1.}|%M|%X{ctime}] - %msg %ex{full}%n</Pattern>
+        </encoder>
+    </appender>
+    <appender name="ASYNC_ROLLINGFILE" class="ch.qos.logback.classic.AsyncAppender">
+        <queueSize>512</queueSize>
+        <discardingThreshold>0</discardingThreshold>
+        <appender-ref ref="ROLLINGFILE"/>
+    </appender>
+
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%-4relative [%thread] %-5level %logger{35} - %msg %ex{full}%n</pattern>
+        </encoder>
+    </appender>
+
+    <logger name="org.springframework" level="ERROR"/>
+    <logger name="org.hibernate" level="ERROR"/>
+    <logger name="com.zaxxer.hikari" level="INFO"/>
+    <logger name="org.apache.catalina.authenticator" level="ERROR"/>
+    <logger name="org.apache.catalina.session" level="ERROR"/>
+    <logger name="org.apache.jute" level="ERROR"/>
+    <logger name="org.apache.jasper.compiler" level="ERROR"/>
+
+    <logger name="org.hibernate.type.descriptor.sql.BasicBinder" level="TRACE"/>
+    <!--<logger name="org.hibernate.type.descriptor.sql.BasicExtractor" level="TRACE"/>-->
+    <logger name="org.hibernate.engine.QueryParameters" level="${level}"/>
+    <!--<logger name="org.hibernate.engine.query.HQLQueryPlan" level="${level}"/>-->
+    <logger name="org.hibernate.SQL" level="${level}" />
+
+    <root level="${level}">
+        <appender-ref ref="STDOUT"/>
+        <appender-ref ref="ASYNC_ROLLINGFILE"/>
+    </root>
+
+</configuration>

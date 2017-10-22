@@ -1,0 +1,90 @@
+# ===================================================================
+# Spring Boot configuration.
+#
+# This configuration will be overriden by the Spring profile you use,
+# for example application-dev.yml if you use the "dev" profile.
+# ===================================================================
+
+# ===================================================================
+# Standard Spring Boot properties.
+# Full reference is available at:
+# http://docs.spring.io/spring-boot/docs/current/reference/html/common-application-properties.html
+# ===================================================================
+debug: false
+spring:
+    application:
+        name: loans-server
+    profiles:
+        # The commented value for `active` can be replaced with valid Spring profiles to load.
+        # Otherwise, it will be filled in by maven when building the WAR file
+        # Either way, it can be overridden by `--spring.profiles.active` value passed in the commandline or `-Dspring.profiles.active` set in `JAVA_OPTS`
+        active: ${spring.profiles.active}
+
+    jackson:
+        serialization.write_dates_as_timestamps: false
+        serialization.indent_output: true
+
+    jpa:
+#        open-in-view: false
+#        hibernate:
+#            ddl-auto: none
+#            naming:
+#                physical-strategy: org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy
+#                implicit-strategy: org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy
+        database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+        database: MYSQL
+        show-sql: true
+        properties:
+            hibernate.cache.use_second_level_cache: false
+            hibernate.cache.use_query_cache: false
+            hibernate.generate_statistics: false
+            hibernate.javax.cache.provider: org.ehcache.jsr107.EhcacheCachingProvider
+            hibernate.javax.cache.uri: ${spring.cache.jcache.config}
+
+    messages:
+        basename: i18n/messages
+
+    resources:
+        add-mappings: true
+        static-locations: /
+
+    mvc:
+        throw-exception-if-no-handler-found: true
+        favicon:
+            enabled: false
+
+    thymeleaf:
+        mode: XHTML
+
+security:
+    basic:
+        enabled: false
+
+server:
+    port: 8080
+    session:
+        cookie:
+            http-only: true
+
+loans:
+    cache:
+        enabled: false
+        expire: 1800
+        allows:
+            - org.kelex.loans.core.entity.ProductEntity
+            - org.kelex.loans.core.entity.ActProcessCtrlEntity
+            - org.kelex.loans.core.entity.StatusCodeEntity
+            - org.kelex.loans.core.entity.PlanProfileEntity
+            - org.kelex.loans.core.entity.PlanProcessCtrlEntity
+            - org.kelex.loans.core.entity.CurrProcessCtrlEntity
+            - org.kelex.loans.core.entity.TxnProfileEntity
+            - org.kelex.loans.core.entity.TxnProcessCtrlEntity
+            - org.kelex.loans.core.entity.BalCompProfileEntity
+            - org.kelex.loans.core.entity.BalProcessCtrlEntity
+            - org.kelex.loans.core.entity.PaymentProcessCtrlEntity
+
+#mybatis:
+#    configuration:
+#        mapUnderscoreToCamelCase: true
+#    mapperLocations: classpath*:com/liye/exam/kcks/mybatis/mapper/*Handler.xml
+#    typeAliasesPackage: com.liye.exam.kcks.domain

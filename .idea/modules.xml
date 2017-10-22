@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/loans.iml" filepath="$PROJECT_DIR$/loans.iml" />
+      <module fileurl="file://$PROJECT_DIR$/loans-api/loans-api.iml" filepath="$PROJECT_DIR$/loans-api/loans-api.iml" />
+      <module fileurl="file://$PROJECT_DIR$/loans-core/loans-core.iml" filepath="$PROJECT_DIR$/loans-core/loans-core.iml" />
+      <module fileurl="file://$PROJECT_DIR$/loans-server/loans-server.iml" filepath="$PROJECT_DIR$/loans-server/loans-server.iml" />
+      <module fileurl="file://$PROJECT_DIR$/loans-webmvc/loans-webmvc.iml" filepath="$PROJECT_DIR$/loans-webmvc/loans-webmvc.iml" />
+    </modules>
+  </component>
+</project>
