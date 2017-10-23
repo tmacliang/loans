@@ -2,7 +2,6 @@ package org.kelex.loans.core.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
-import javax.persistence.Id;
 import java.io.Serializable;
 import java.util.Objects;
 

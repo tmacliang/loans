@@ -4,14 +4,12 @@ import org.kelex.loans.enumeration.CurrencyCode;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Objects;
 
 /**
  * Created by hechao on 2017/10/20.
  */
 @Entity
 @Table(name = "payment_process_ctrl")
-@IdClass(PaymentProcessCtrlId.class)
 public class PaymentProcessCtrlEntity extends BaseEntity implements Serializable{
 
     private static final long serialVersionUID = 8853788068081070597L;
