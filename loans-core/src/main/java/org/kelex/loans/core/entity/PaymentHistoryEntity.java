@@ -1,6 +1,6 @@
 package org.kelex.loans.core.entity;
 
-import org.kelex.loans.enumeration.CurrencyCode;
+import org.kelex.loans.enumeration.CurrencyCodeEnum;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -55,7 +55,7 @@ public class PaymentHistoryEntity extends BaseEntity implements Serializable{
 
     @Basic
     @Column(name = "CURRENCY_CODE", nullable = false, length = 4)
-    private CurrencyCode currencyCode;
+    private CurrencyCodeEnum currencyCodeEnum;
 
     @Basic
     @Column(name = "PAYMENT_METHOD", nullable = false, length = 5)
@@ -153,12 +153,12 @@ public class PaymentHistoryEntity extends BaseEntity implements Serializable{
         this.paymentAmt = paymentAmt;
     }
 
-    public CurrencyCode getCurrencyCode() {
-        return currencyCode;
+    public CurrencyCodeEnum getCurrencyCodeEnum() {
+        return currencyCodeEnum;
     }
 
-    public void setCurrencyCode(CurrencyCode currencyCode) {
-        this.currencyCode = currencyCode;
+    public void setCurrencyCodeEnum(CurrencyCodeEnum currencyCodeEnum) {
+        this.currencyCodeEnum = currencyCodeEnum;
     }
 
     public String getPaymentMethod() {

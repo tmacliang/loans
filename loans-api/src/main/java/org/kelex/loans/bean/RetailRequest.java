@@ -1,6 +1,6 @@
 package org.kelex.loans.bean;
 
-import org.kelex.loans.enumeration.CurrencyCode;
+import org.kelex.loans.enumeration.CurrencyCodeEnum;
 
 import java.math.BigDecimal;
 
@@ -36,7 +36,7 @@ public interface RetailRequest {
      * 币种
      * @return
      */
-    public CurrencyCode getCurrencyCode();
+    public CurrencyCodeEnum getCurrencyCodeEnum();
 
     /**
      * 商家名

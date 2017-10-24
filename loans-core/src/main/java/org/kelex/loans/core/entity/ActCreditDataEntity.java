@@ -1,7 +1,7 @@
 package org.kelex.loans.core.entity;
 
 import org.hibernate.annotations.Type;
-import org.kelex.loans.enumeration.CurrencyCode;
+import org.kelex.loans.enumeration.CurrencyCodeEnum;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -22,7 +22,7 @@ public class ActCreditDataEntity extends BaseEntity{
 
     @Enumerated(EnumType.STRING)
     @Column(name = "CURRENCY_CODE", nullable = false, length = 4)
-    private CurrencyCode currencyCode;
+    private CurrencyCodeEnum currencyCodeEnum;
 
     @Column(name = "CREDIT_LIMIT", nullable = false, precision = 2)
     private BigDecimal creditLimit;
@@ -61,12 +61,12 @@ public class ActCreditDataEntity extends BaseEntity{
         this.accountId = accountId;
     }
 
-    public CurrencyCode getCurrencyCode() {
-        return currencyCode;
+    public CurrencyCodeEnum getCurrencyCodeEnum() {
+        return currencyCodeEnum;
     }
 
-    public void setCurrencyCode(CurrencyCode currencyCode) {
-        this.currencyCode = currencyCode;
+    public void setCurrencyCodeEnum(CurrencyCodeEnum currencyCodeEnum) {
+        this.currencyCodeEnum = currencyCodeEnum;
     }
 
     public BigDecimal getCreditLimit() {
@@ -152,7 +152,7 @@ public class ActCreditDataEntity extends BaseEntity{
                 .append("accountId = ").append(accountId)
                 .append(",availableBalance = ").append(availableBalance)
                 .append(",creditLimit = ").append(creditLimit)
-                .append(",currencyCode = ").append(currencyCode)
+                .append(",currencyCode = ").append(currencyCodeEnum)
                 .append(",lastLimitChangeDate = ").append(lastLimitChangeDate)
                 .append(",outstandingAuthAmt = ").append(outstandingAuthAmt)
                 .append(",tempCreditEndDate = ").append(tempCreditEndDate)

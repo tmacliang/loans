@@ -23,7 +23,7 @@ import java.time.LocalTime;
  * Created by hechao on 2017/9/18.
  */
 @Service
-public class RetailService extends TransactionService<RetailRequest>{
+public class RetailService extends TransactionService<RetailRequest> {
 
     @Inject
     private EntryService entryService;
@@ -42,7 +42,16 @@ public class RetailService extends TransactionService<RetailRequest>{
 
     @Override
     protected void checkArguments(TransactionRequestContext<? extends RetailRequest> context) {
-
+        RequestDTO<? extends RetailRequest> request = context.getRequest();
+        RetailRequest data = request.getData();
+        AssertUtils.notNull(data.getAccountId(), ArgumentMessageEnum.ERROR_ACCOUNT_ISNULL);
+        AssertUtils.notNull(data.getMerchantName(), ArgumentMessageEnum.ERROR_MERCHANTNAME_ISNULL);
+        AssertUtils.notNull(data.getCommodityCode(), ArgumentMessageEnum.ERROR_COMMODITYCODE_ISNULL);
+        AssertUtils.notNull(data.getRetailOrderNo(), ArgumentMessageEnum.ERROR_RETAILORDERNO_ISNULL);
+        AssertUtils.notNull(data.getRetailAmount(), ArgumentMessageEnum.ERROR_RETAILAMOUNT_ISNULL);
+        AssertUtils.notNull(data.getTotalTerms(), ArgumentMessageEnum.ERROR_TOTALTERMS_ISNULL);
+        AssertUtils.notNull(data.getCurrencyCodeEnum(), ArgumentMessageEnum.ERROR_CURRENCYCODE_ISNULL);
+        //RetailAmount > 0 && totalTerms > 0
     }
 
     @Override
@@ -70,7 +79,7 @@ public class RetailService extends TransactionService<RetailRequest>{
         PlanProcessCtrlEntity planCtrl = entryService.findOnePlanProcessCtrl(productId, actTypeId, planId, repository);
 
         //检查并得到货币控制实体
-        CurrProcessCtrlEntity currCtrl = entryService.findOneCurrProcessCtrl(planCtrl.getCurrencyCode(), planCtrl.getCurrencyUnit(), repository);
+        CurrProcessCtrlEntity currCtrl = entryService.findOneCurrProcessCtrl(planCtrl.getCurrencyCodeEnum(), planCtrl.getCurrencyUnit(), repository);
 
         //检查并得到首期控制
         TxnProcessCtrlEntity txnCtrl = entryService.findOneTxnProcessCtrl(productId, actTypeId, planCtrl.getFirstTxnCode(), repository);
@@ -95,14 +104,14 @@ public class RetailService extends TransactionService<RetailRequest>{
         LocalDate businessDate = request.getBusinessDate();
         RetailRequest data = request.getData();
 
-        PlanProcessCtrlEntity planCtrl = (PlanProcessCtrlEntity)context.getAttribute(PlanProcessCtrlEntity.class);
-        PlanProfileEntity planProfile = (PlanProfileEntity)context.getAttribute(PlanProfileEntity.class);
-        CurrProcessCtrlEntity currCtrl = (CurrProcessCtrlEntity)context.getAttribute(CurrProcessCtrlEntity.class);
-        AccountEntity account = (AccountEntity)context.getAttribute(AccountEntity.class);
-        CycleSummaryEntity cycle = (CycleSummaryEntity)context.getAttribute(CycleSummaryEntity.class);
-        TxnProcessCtrlEntity firstCtrl = (TxnProcessCtrlEntity)context.getAttribute(TxnProcessCtrlEntity.class);
+        PlanProcessCtrlEntity planCtrl = (PlanProcessCtrlEntity) context.getAttribute(PlanProcessCtrlEntity.class);
+        PlanProfileEntity planProfile = (PlanProfileEntity) context.getAttribute(PlanProfileEntity.class);
+        CurrProcessCtrlEntity currCtrl = (CurrProcessCtrlEntity) context.getAttribute(CurrProcessCtrlEntity.class);
+        AccountEntity account = (AccountEntity) context.getAttribute(AccountEntity.class);
+        CycleSummaryEntity cycle = (CycleSummaryEntity) context.getAttribute(CycleSummaryEntity.class);
+        TxnProcessCtrlEntity firstCtrl = (TxnProcessCtrlEntity) context.getAttribute(TxnProcessCtrlEntity.class);
 
-        BigDecimal retailAmount=data.getRetailAmount().multiply(BigDecimal.ONE.scaleByPowerOfTen(currCtrl.getPower()));
+        BigDecimal retailAmount = data.getRetailAmount().multiply(BigDecimal.ONE.scaleByPowerOfTen(currCtrl.getPower()));
         InstalmentSample sample = TransactionUtils.getInstalmentSample(retailAmount, account, planProfile, planCtrl, firstCtrl, currCtrl, businessDate);
 
         IdWorker idWorker = context.getIdWorker();
@@ -119,7 +128,7 @@ public class RetailService extends TransactionService<RetailRequest>{
         iou.setOutstandingTerms(planProfile.getPlanTerms());
         iou.setIouTerms(planProfile.getPlanTerms());
         iou.setStatusCode(planProfile.getInitStatusCode());
-        iou.setCurrencyCode(account.getCurrencyCode());
+        iou.setCurrencyCodeEnum(account.getCurrencyCodeEnum());
 
         iou.setPostingFeeAmt(BigDecimal.ZERO);
         iou.setCurrentBalance(BigDecimal.ZERO);

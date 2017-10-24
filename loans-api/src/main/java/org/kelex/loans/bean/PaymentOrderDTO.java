@@ -1,6 +1,6 @@
 package org.kelex.loans.bean;
 
-import org.kelex.loans.enumeration.CurrencyCode;
+import org.kelex.loans.enumeration.CurrencyCodeEnum;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -19,7 +19,7 @@ public class PaymentOrderDTO implements PaymentOrderRequest, Serializable {
 
     private BigDecimal paymentAmount;
 
-    private CurrencyCode currencyCode;
+    private CurrencyCodeEnum currencyCodeEnum;
 
     public void setAccountId(Long accountId) {
         this.accountId = accountId;
@@ -37,8 +37,8 @@ public class PaymentOrderDTO implements PaymentOrderRequest, Serializable {
         this.paymentAmount = paymentAmount;
     }
 
-    public void setCurrencyCode(CurrencyCode currencyCode) {
-        this.currencyCode = currencyCode;
+    public void setCurrencyCodeEnum(CurrencyCodeEnum currencyCodeEnum) {
+        this.currencyCodeEnum = currencyCodeEnum;
     }
 
     @Override
@@ -61,8 +61,7 @@ public class PaymentOrderDTO implements PaymentOrderRequest, Serializable {
         return paymentAmount;
     }
 
-    @Override
-    public CurrencyCode getCurrencyCode() {
-        return currencyCode;
+    public CurrencyCodeEnum getCurrencyCodeEnum() {
+        return currencyCodeEnum;
     }
 }

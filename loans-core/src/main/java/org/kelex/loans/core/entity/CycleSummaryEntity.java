@@ -1,6 +1,6 @@
 package org.kelex.loans.core.entity;
 
-import org.kelex.loans.enumeration.CurrencyCode;
+import org.kelex.loans.enumeration.CurrencyCodeEnum;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -35,7 +35,7 @@ public class CycleSummaryEntity extends BaseEntity{
 
     @Enumerated(EnumType.STRING)
     @Column(name = "CURRENCY_CODE", nullable = false, length = 4)
-    private CurrencyCode currencyCode;
+    private CurrencyCodeEnum currencyCodeEnum;
 
     @Column(name = "START_DATE", nullable = false)
     private LocalDate startDate;
@@ -119,12 +119,12 @@ public class CycleSummaryEntity extends BaseEntity{
         this.nextTxnSummaryNo = nextTxnSummaryNo;
     }
 
-    public CurrencyCode getCurrencyCode() {
-        return currencyCode;
+    public CurrencyCodeEnum getCurrencyCodeEnum() {
+        return currencyCodeEnum;
     }
 
-    public void setCurrencyCode(CurrencyCode currencyCode) {
-        this.currencyCode = currencyCode;
+    public void setCurrencyCodeEnum(CurrencyCodeEnum currencyCodeEnum) {
+        this.currencyCodeEnum = currencyCodeEnum;
     }
 
     public LocalDate getStartDate() {
@@ -248,7 +248,7 @@ public class CycleSummaryEntity extends BaseEntity{
     public String toString() {
         final StringBuilder sb = new StringBuilder("CycleSummaryEntity{")
                 .append("closeBalance = ").append(closeBalance)
-                .append(",currencyCode = ").append(currencyCode)
+                .append(",currencyCode = ").append(currencyCodeEnum)
                 .append(",cycleDate = ").append(cycleDate)
                 .append(",endDate = ").append(endDate)
                 .append(",id = ").append(id)

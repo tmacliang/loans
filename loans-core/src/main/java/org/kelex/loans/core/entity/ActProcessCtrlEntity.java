@@ -1,6 +1,6 @@
 package org.kelex.loans.core.entity;
 
-import org.kelex.loans.enumeration.CurrencyCode;
+import org.kelex.loans.enumeration.CurrencyCodeEnum;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
@@ -22,7 +22,7 @@ public class ActProcessCtrlEntity extends DescriptionEntity implements Serializa
 
     @Enumerated(EnumType.STRING)
     @Column(name = "CURRENCY_CODE", nullable = false)
-    private CurrencyCode currencyCode;
+    private CurrencyCodeEnum currencyCodeEnum;
 
     @Column(name = "CURRENCY_UNIT", nullable = false)
     private String currencyUnit;
@@ -54,12 +54,12 @@ public class ActProcessCtrlEntity extends DescriptionEntity implements Serializa
         this.id = id;
     }
 
-    public CurrencyCode getCurrencyCode() {
-        return currencyCode;
+    public CurrencyCodeEnum getCurrencyCodeEnum() {
+        return currencyCodeEnum;
     }
 
-    public void setCurrencyCode(CurrencyCode currencyCode) {
-        this.currencyCode = currencyCode;
+    public void setCurrencyCodeEnum(CurrencyCodeEnum currencyCodeEnum) {
+        this.currencyCodeEnum = currencyCodeEnum;
     }
 
     public String getCurrencyUnit() {
@@ -126,7 +126,7 @@ public class ActProcessCtrlEntity extends DescriptionEntity implements Serializa
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("ActProcessCtrlEntity{")
-                .append("currencyCode = ").append(currencyCode)
+                .append("currencyCode = ").append(currencyCodeEnum)
                 .append(",currencyUnit = '").append(currencyUnit).append('\'')
                 .append(",defaultCreditLimit = ").append(defaultCreditLimit)
                 .append(",defaultDlqFeeRate = ").append(defaultDlqFeeRate)

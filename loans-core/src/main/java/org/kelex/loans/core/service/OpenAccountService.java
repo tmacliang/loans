@@ -39,7 +39,7 @@ public class OpenAccountService extends TransactionService<OpenAccountRequest> {
 
         OpenAccountRequest data = request.getData();
 
-        AssertUtils.notNull(data.getCurrencyCode(), ArgumentMessageEnum.ERROR_CURRENCY_CODE_ILLEGAL);
+        AssertUtils.notNull(data.getCurrencyCodeEnum(), ArgumentMessageEnum.ERROR_CURRENCY_CODE_ILLEGAL);
 
         AssertUtils.notNull(data.getProductCode(), ArgumentMessageEnum.ERROR_PRODUCT_CODE_ISNULL);
         AssertUtils.size(data.getProductCode().length(),
@@ -111,7 +111,7 @@ public class OpenAccountService extends TransactionService<OpenAccountRequest> {
 
         ActProcessCtrlEntity actProcCtrl = (ActProcessCtrlEntity) context.getAttribute(ActProcessCtrlEntity.class);
         AccountEntity account = createAccount(product, customer, actProcCtrl, idWorker.nextId(), businessDate);
-        account.setCurrencyCode(data.getCurrencyCode());
+        account.setCurrencyCodeEnum(data.getCurrencyCodeEnum());
         account.setCycleTriggerSeq(idWorker.nextId());
 
         ActCreditDataEntity actCreditDate = createActCreditDate(account, businessDate);
@@ -188,7 +188,6 @@ public class OpenAccountService extends TransactionService<OpenAccountRequest> {
         account.setWaiveOtherFeeFlag(true);
         account.setWaiveOtherFeeStartDate(businessDate);
         account.setWaiveOtherFeeEndDate(businessDate);
-
         account.setInterestFreeDays(actProcCtrl.getDefaultInterestFreeDays());
         account.setInDlqFlag(false);
         account.setLevel1ActId(accountId);
@@ -199,7 +198,7 @@ public class OpenAccountService extends TransactionService<OpenAccountRequest> {
         ActCreditDataEntity entity = new ActCreditDataEntity();
         entity.setAccountId(account.getAccountId());
         entity.setWholeFlag(true);
-        entity.setCurrencyCode(account.getCurrencyCode());
+        entity.setCurrencyCodeEnum(account.getCurrencyCodeEnum());
         entity.setCreditLimit(account.getCreditLimit());
         entity.setAvailableBalance(BigDecimal.ZERO);
         entity.setOutstandingAuthAmt(BigDecimal.ZERO);
@@ -220,7 +219,7 @@ public class OpenAccountService extends TransactionService<OpenAccountRequest> {
         embeddedId.setAccountId(account.getAccountId());
         embeddedId.setCycleNo(account.getCurrentCycleNo());
         entity.setId(embeddedId);
-        entity.setCurrencyCode(account.getCurrencyCode());
+        entity.setCurrencyCodeEnum(account.getCurrencyCodeEnum());
         entity.setNextTxnSummaryNo(1);
         entity.setCloseBalance(BigDecimal.ZERO);
         entity.setOpenBalance(BigDecimal.ZERO);
