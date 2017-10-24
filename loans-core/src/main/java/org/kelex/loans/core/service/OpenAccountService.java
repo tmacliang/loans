@@ -39,7 +39,7 @@ public class OpenAccountService extends TransactionService<OpenAccountRequest> {
 
         OpenAccountRequest data = request.getData();
 
-        AssertUtils.notNull(data.getCurrencyCodeEnum(), ArgumentMessageEnum.ERROR_CURRENCY_CODE_ILLEGAL);
+        AssertUtils.notNull(data.getCurrencyCode(), ArgumentMessageEnum.ERROR_CURRENCY_CODE_ILLEGAL);
 
         AssertUtils.notNull(data.getProductCode(), ArgumentMessageEnum.ERROR_PRODUCT_CODE_ISNULL);
         AssertUtils.size(data.getProductCode().length(),
@@ -111,7 +111,7 @@ public class OpenAccountService extends TransactionService<OpenAccountRequest> {
 
         ActProcessCtrlEntity actProcCtrl = (ActProcessCtrlEntity) context.getAttribute(ActProcessCtrlEntity.class);
         AccountEntity account = createAccount(product, customer, actProcCtrl, idWorker.nextId(), businessDate);
-        account.setCurrencyCodeEnum(data.getCurrencyCodeEnum());
+        account.setCurrencyCodeEnum(data.getCurrencyCode());
         account.setCycleTriggerSeq(idWorker.nextId());
 
         ActCreditDataEntity actCreditDate = createActCreditDate(account, businessDate);

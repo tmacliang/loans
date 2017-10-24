@@ -14,13 +14,15 @@ public class OpenAccountDTO implements OpenAccountRequest, Serializable{
     private String memberId;
     private String memberType;
     private String mobilePhone;
+    private CurrencyCodeEnum currencyCode;
 
-    public CurrencyCodeEnum getCurrencyCodeEnum() {
-        return currencyCodeEnum;
+    @Override
+    public CurrencyCodeEnum getCurrencyCode() {
+        return currencyCode;
     }
 
-    public void setCurrencyCodeEnum(CurrencyCodeEnum currencyCodeEnum) {
-        this.currencyCodeEnum = currencyCodeEnum;
+    public void setCurrencyCodeEnum(CurrencyCodeEnum currencyCode) {
+        this.currencyCode = currencyCode;
     }
 
     private CurrencyCodeEnum currencyCodeEnum;

@@ -43,7 +43,7 @@ public class CycleService extends TransactionService<RetailRequest> {
 
     public List next(AccountEntity account, CycleSummaryEntity cycle, IouReceiptEntity iou, LocalDate businessDate, TransactionContext context) {
 
-        if (Objects.equals(cycle.getId().getCycleNo(), iou.getCycleNo())) {
+        if (!Objects.equals(cycle.getId().getCycleNo(), iou.getCycleNo())) {
             throw new IllegalArgumentException("cycle.cycleNo != iou.cycleNo");
         }
 

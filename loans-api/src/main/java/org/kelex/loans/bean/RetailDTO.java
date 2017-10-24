@@ -20,7 +20,7 @@ public class RetailDTO implements RetailRequest, Serializable{
 
     private Integer totalTerms;
 
-    private CurrencyCodeEnum currencyCodeEnum;
+    private CurrencyCodeEnum currencyCode;
 
     private String merchantName;
 
@@ -64,12 +64,13 @@ public class RetailDTO implements RetailRequest, Serializable{
         this.totalTerms = totalTerms;
     }
 
-    public CurrencyCodeEnum getCurrencyCodeEnum() {
-        return currencyCodeEnum;
+    @Override
+    public CurrencyCodeEnum getCurrencyCode() {
+        return currencyCode;
     }
 
-    public void setCurrencyCodeEnum(CurrencyCodeEnum currencyCodeEnum) {
-        this.currencyCodeEnum = currencyCodeEnum;
+    public void setCurrencyCode(CurrencyCodeEnum currencyCode) {
+        this.currencyCode = currencyCode;
     }
 
     @Override
@@ -104,7 +105,7 @@ public class RetailDTO implements RetailRequest, Serializable{
         final StringBuilder sb = new StringBuilder("RetailDTO{");
         sb.append("accountId = ").append(accountId);
         sb.append(",commodityCode = '").append(commodityCode).append('\'');
-        sb.append(",currencyCode = '").append(currencyCodeEnum).append('\'');
+        sb.append(",currencyCode = '").append(currencyCode).append('\'');
         sb.append(",descText = '").append(descText).append('\'');
         sb.append(",merchantName = '").append(merchantName).append('\'');
         sb.append(",retailAmount = ").append(retailAmount);

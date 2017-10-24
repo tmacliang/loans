@@ -40,6 +40,6 @@ public interface OpenAccountRequest {
      * 币种
      * @return
      */
-    public CurrencyCodeEnum getCurrencyCodeEnum();
+    public CurrencyCodeEnum getCurrencyCode();
 
 }

@@ -47,6 +47,9 @@ public class EntryService {
     @Inject
     private PaymentProcessCtrlRepository paymentProcessCtrlRepository;
 
+    @Inject
+    private ActCreditDataRepository actcreditdatarepository;
+
     public static String getKey(BaseEntity entity, String... strings) {
         return getKey(entity.getClass(), strings);
     }
@@ -325,4 +328,23 @@ public class EntryService {
         entity = paymentProcessCtrlRepository.findOne(ctrlId);
         return toCache(key, entity, repository);
     }
+
+
+    /**
+     * 查询额度
+     *
+     * @param accountId
+     * @param repository
+     * @return
+     */
+    public ActCreditDataEntity findOneActCreditData(Long accountId, RepositoryProxy repository) {
+        String key = getKey(ActCreditDataEntity.class, accountId.toString());
+        ActCreditDataEntity entity = fromCache(key, ActCreditDataEntity.class, repository);
+        if (entity != null) {
+            return entity;
+        }
+        entity = actcreditdatarepository.findOne(accountId);
+        return toCache(key, entity, repository);
+    }
+
 }

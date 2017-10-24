@@ -36,7 +36,7 @@ public interface RetailRequest {
      * 币种
      * @return
      */
-    public CurrencyCodeEnum getCurrencyCodeEnum();
+    public CurrencyCodeEnum getCurrencyCode();
 
     /**
      * 商家名
