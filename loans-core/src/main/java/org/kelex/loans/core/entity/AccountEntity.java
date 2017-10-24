@@ -161,7 +161,7 @@ public class AccountEntity extends BaseEntity{
     }
 
     public void setLevel1ActId(Long level1ActId) {
-        level1ActId = level1ActId;
+        this.level1ActId = level1ActId;
     }
 
     public Long getLevel2ActId() {
@@ -169,7 +169,7 @@ public class AccountEntity extends BaseEntity{
     }
 
     public void setLevel2ActId(Long level2ActId) {
-        level2ActId = level2ActId;
+        this.level2ActId = level2ActId;
     }
 
     public Long getLevel3ActId() {
@@ -177,7 +177,7 @@ public class AccountEntity extends BaseEntity{
     }
 
     public void setLevel3ActId(Long level3ActId) {
-        level3ActId = level3ActId;
+        this.level3ActId = level3ActId;
     }
 
     public Long getCustomerId() {

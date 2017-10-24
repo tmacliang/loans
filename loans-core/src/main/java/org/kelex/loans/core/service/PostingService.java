@@ -120,7 +120,6 @@ public class PostingService {
 
         String productId = txn.getProductId();
         String actTypeId = txn.getActTypeId();
-        System.out.println(productId + actTypeId);
 
         TxnProcessCtrlEntity txnCtrl = entryService.findOneTxnProcessCtrl(productId, actTypeId, txn.getTxnCode(), repository);
         if(txnCtrl == null){

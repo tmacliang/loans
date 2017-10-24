@@ -191,6 +191,7 @@ public class OpenAccountService extends TransactionService<OpenAccountRequest> {
 
         account.setInterestFreeDays(actProcCtrl.getDefaultInterestFreeDays());
         account.setInDlqFlag(false);
+        account.setLevel1ActId(accountId);
         return account;
     }
 
