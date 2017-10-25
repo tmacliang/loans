@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 import javax.inject.Inject;
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.time.LocalTime;
 
 /**
  * Created by hechao on 2017/10/18.
@@ -48,7 +47,7 @@ public class PaymentOrderService extends TransactionService<PaymentOrderRequest>
 
         PaymentProcessCtrlEntity payCtrl = entryService.findOnePaymentProcessCtrl(productId, actTypeId, data.getPaymentType(), repository);
 
-        CurrProcessCtrlEntity currCtrl = entryService.findOneCurrProcessCtrl(payCtrl.getCurrencyCode(), payCtrl.getCurrencyUnit(), repository);
+        CurrProcessCtrlEntity currCtrl = entryService.findOneCurrProcessCtrl(payCtrl.getCurrencyCodeEnum(), payCtrl.getCurrencyUnit(), repository);
 
         context.setAttribute(AccountEntity.class, account);
         context.setAttribute(PaymentProcessCtrlEntity.class, payCtrl);

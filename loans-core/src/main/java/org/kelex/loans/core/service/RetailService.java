@@ -2,11 +2,13 @@ package org.kelex.loans.core.service;
 
 import org.kelex.loans.ArgumentMessageEnum;
 import org.kelex.loans.bean.RetailRequest;
+import org.kelex.loans.core.ServerRuntimeException;
 import org.kelex.loans.core.context.TransactionRequestContext;
 import org.kelex.loans.core.dto.RequestDTO;
 import org.kelex.loans.core.entity.*;
 import org.kelex.loans.core.repository.AccountRepository;
 import org.kelex.loans.core.repository.CycleSummaryRepository;
+import org.kelex.loans.core.repository.IouReceiptRepository;
 import org.kelex.loans.core.repository.RepositoryProxy;
 import org.kelex.loans.core.util.AssertUtils;
 import org.kelex.loans.core.util.InstalmentSample;
@@ -18,12 +20,13 @@ import javax.inject.Inject;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.Optional;
 
 /**
  * Created by hechao on 2017/9/18.
  */
 @Service
-public class RetailService extends TransactionService<RetailRequest>{
+public class RetailService extends TransactionService<RetailRequest> {
 
     @Inject
     private EntryService entryService;
@@ -40,9 +43,24 @@ public class RetailService extends TransactionService<RetailRequest>{
     @Inject
     private PostingService postingService;
 
+    @Inject
+    private CreditLimitService creditLimitService;
+
+    @Inject
+    private IouReceiptRepository iouReceiptRepository;
+
     @Override
     protected void checkArguments(TransactionRequestContext<? extends RetailRequest> context) {
-
+        RequestDTO<? extends RetailRequest> request = context.getRequest();
+        RetailRequest data = request.getData();
+        AssertUtils.notNull(data.getAccountId(), ArgumentMessageEnum.ERROR_ACCOUNT_ISNULL);
+        AssertUtils.notNull(data.getMerchantName(), ArgumentMessageEnum.ERROR_MERCHANTNAME_ISNULL);
+        AssertUtils.notNull(data.getCommodityCode(), ArgumentMessageEnum.ERROR_COMMODITYCODE_ISNULL);
+        AssertUtils.notNull(data.getRetailOrderNo(), ArgumentMessageEnum.ERROR_RETAILORDERNO_ISNULL);
+        AssertUtils.notNull(data.getRetailAmount(), ArgumentMessageEnum.ERROR_RETAILAMOUNT_ISNULL);
+        AssertUtils.notNull(data.getTotalTerms(), ArgumentMessageEnum.ERROR_TOTALTERMS_ISNULL);
+        AssertUtils.notNull(data.getCurrencyCode(), ArgumentMessageEnum.ERROR_CURRENCYCODE_ISNULL);
+        //RetailAmount > 0 && totalTerms > 0
     }
 
     @Override
@@ -51,6 +69,24 @@ public class RetailService extends TransactionService<RetailRequest>{
         RetailRequest data = request.getData();
         RepositoryProxy repository = context.getRepository();
         Long accountId = data.getAccountId();
+
+        //检查并得到交易计划配置实体
+//        PlanProfileEntity planProfile = entryService.findOnePlanProfile(planId, repository);
+
+        ActCreditDataEntity actCreditDataEntity = entryService.findOneActCreditData(accountId, repository);
+        context.setAttribute(ActCreditDataEntity.class, actCreditDataEntity);
+
+        //计算可用余额
+        BigDecimal availableBalance = creditLimitService.calAvailableBalance(accountId, context);
+        if(data.getRetailAmount().compareTo(availableBalance) > 0){
+            throw new ServerRuntimeException(500,"availableBalance is less than retailAmount");
+        }
+
+        //判断幂等性
+        Optional<IouReceiptEntity> iouReceiptEntityOpt = iouReceiptRepository.findOneByOrderNo(data.getRetailOrderNo());
+        if(iouReceiptEntityOpt.isPresent()){
+            throw new ServerRuntimeException(500,"duplicate Exception");
+        }
 
         //检查并得到账户实体
         AccountEntity account = accountRepository.findOne(accountId);
@@ -70,7 +106,7 @@ public class RetailService extends TransactionService<RetailRequest>{
         PlanProcessCtrlEntity planCtrl = entryService.findOnePlanProcessCtrl(productId, actTypeId, planId, repository);
 
         //检查并得到货币控制实体
-        CurrProcessCtrlEntity currCtrl = entryService.findOneCurrProcessCtrl(planCtrl.getCurrencyCode(), planCtrl.getCurrencyUnit(), repository);
+        CurrProcessCtrlEntity currCtrl = entryService.findOneCurrProcessCtrl(planCtrl.getCurrencyCodeEnum(), planCtrl.getCurrencyUnit(), repository);
 
         //检查并得到首期控制
         TxnProcessCtrlEntity txnCtrl = entryService.findOneTxnProcessCtrl(productId, actTypeId, planCtrl.getFirstTxnCode(), repository);
@@ -95,14 +131,14 @@ public class RetailService extends TransactionService<RetailRequest>{
         LocalDate businessDate = request.getBusinessDate();
         RetailRequest data = request.getData();
 
-        PlanProcessCtrlEntity planCtrl = (PlanProcessCtrlEntity)context.getAttribute(PlanProcessCtrlEntity.class);
-        PlanProfileEntity planProfile = (PlanProfileEntity)context.getAttribute(PlanProfileEntity.class);
-        CurrProcessCtrlEntity currCtrl = (CurrProcessCtrlEntity)context.getAttribute(CurrProcessCtrlEntity.class);
-        AccountEntity account = (AccountEntity)context.getAttribute(AccountEntity.class);
-        CycleSummaryEntity cycle = (CycleSummaryEntity)context.getAttribute(CycleSummaryEntity.class);
-        TxnProcessCtrlEntity firstCtrl = (TxnProcessCtrlEntity)context.getAttribute(TxnProcessCtrlEntity.class);
+        PlanProcessCtrlEntity planCtrl = (PlanProcessCtrlEntity) context.getAttribute(PlanProcessCtrlEntity.class);
+        PlanProfileEntity planProfile = (PlanProfileEntity) context.getAttribute(PlanProfileEntity.class);
+        CurrProcessCtrlEntity currCtrl = (CurrProcessCtrlEntity) context.getAttribute(CurrProcessCtrlEntity.class);
+        AccountEntity account = (AccountEntity) context.getAttribute(AccountEntity.class);
+        CycleSummaryEntity cycle = (CycleSummaryEntity) context.getAttribute(CycleSummaryEntity.class);
+        TxnProcessCtrlEntity firstCtrl = (TxnProcessCtrlEntity) context.getAttribute(TxnProcessCtrlEntity.class);
 
-        BigDecimal retailAmount=data.getRetailAmount().multiply(BigDecimal.ONE.scaleByPowerOfTen(currCtrl.getPower()));
+        BigDecimal retailAmount = data.getRetailAmount().multiply(BigDecimal.ONE.scaleByPowerOfTen(currCtrl.getPower()));
         InstalmentSample sample = TransactionUtils.getInstalmentSample(retailAmount, account, planProfile, planCtrl, firstCtrl, currCtrl, businessDate);
 
         IdWorker idWorker = context.getIdWorker();
@@ -119,7 +155,7 @@ public class RetailService extends TransactionService<RetailRequest>{
         iou.setOutstandingTerms(planProfile.getPlanTerms());
         iou.setIouTerms(planProfile.getPlanTerms());
         iou.setStatusCode(planProfile.getInitStatusCode());
-        iou.setCurrencyCode(account.getCurrencyCode());
+        iou.setCurrencyCodeEnum(account.getCurrencyCodeEnum());
 
         iou.setPostingFeeAmt(BigDecimal.ZERO);
         iou.setCurrentBalance(BigDecimal.ZERO);

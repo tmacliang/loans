@@ -1,6 +1,6 @@
 package org.kelex.loans.core.entity;
 
-import org.kelex.loans.enumeration.CurrencyCode;
+import org.kelex.loans.enumeration.CurrencyCodeEnum;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -10,7 +10,7 @@ import java.io.Serializable;
  */
 @Entity
 @Table(name = "payment_process_ctrl")
-public class PaymentProcessCtrlEntity extends BaseEntity implements Serializable{
+public class PaymentProcessCtrlEntity extends BaseEntity implements Serializable {
 
     private static final long serialVersionUID = 8853788068081070597L;
     @EmbeddedId
@@ -31,7 +31,7 @@ public class PaymentProcessCtrlEntity extends BaseEntity implements Serializable
     @Basic
     @Enumerated(EnumType.STRING)
     @Column(name = "CURRENCY_CODE", nullable = false)
-    private CurrencyCode currencyCode;
+    private CurrencyCodeEnum currencyCodeEnum;
 
     @Basic
     @Column(name = "CURRENCY_UNIT", nullable = false)
@@ -69,12 +69,12 @@ public class PaymentProcessCtrlEntity extends BaseEntity implements Serializable
         this.statusType = statusType;
     }
 
-    public CurrencyCode getCurrencyCode() {
-        return currencyCode;
+    public CurrencyCodeEnum getCurrencyCodeEnum() {
+        return currencyCodeEnum;
     }
 
-    public void setCurrencyCode(CurrencyCode currencyCode) {
-        this.currencyCode = currencyCode;
+    public void setCurrencyCodeEnum(CurrencyCodeEnum currencyCodeEnum) {
+        this.currencyCodeEnum = currencyCodeEnum;
     }
 
     public String getCurrencyUnit() {
@@ -93,7 +93,7 @@ public class PaymentProcessCtrlEntity extends BaseEntity implements Serializable
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("PaymentProcessCtrlEntity{")
-                .append("currencyCode = ").append(currencyCode)
+                .append("currencyCode = ").append(currencyCodeEnum)
                 .append(",currencyUnit = '").append(currencyUnit).append('\'')
                 .append(",id = ").append(id)
                 .append(",initStatusCode = '").append(initStatusCode).append('\'')

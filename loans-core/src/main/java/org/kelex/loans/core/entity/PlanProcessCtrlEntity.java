@@ -3,7 +3,7 @@ package org.kelex.loans.core.entity;
 import org.hibernate.annotations.Type;
 import org.kelex.loans.core.enumeration.FeePayMethod;
 import org.kelex.loans.core.enumeration.RemAdjustMethod;
-import org.kelex.loans.enumeration.CurrencyCode;
+import org.kelex.loans.enumeration.CurrencyCodeEnum;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -26,7 +26,7 @@ public class PlanProcessCtrlEntity extends DescriptionEntity {
 
     @Enumerated(value = EnumType.STRING)
     @Column(name = "CURRENCY_CODE", nullable = false, length = 4)
-    private CurrencyCode currencyCode;
+    private CurrencyCodeEnum currencyCodeEnum;
 
     @Column(name = "CURRENCY_UNIT", nullable = false, length = 5)
     private String currencyUnit;
@@ -73,12 +73,12 @@ public class PlanProcessCtrlEntity extends DescriptionEntity {
         this.activeFlag = activeFlag;
     }
 
-    public CurrencyCode getCurrencyCode() {
-        return currencyCode;
+    public CurrencyCodeEnum getCurrencyCodeEnum() {
+        return currencyCodeEnum;
     }
 
-    public void setCurrencyCode(CurrencyCode currencyCode) {
-        this.currencyCode = currencyCode;
+    public void setCurrencyCodeEnum(CurrencyCodeEnum currencyCodeEnum) {
+        this.currencyCodeEnum = currencyCodeEnum;
     }
 
     public String getCurrencyUnit() {
@@ -164,7 +164,7 @@ public class PlanProcessCtrlEntity extends DescriptionEntity {
         final StringBuilder sb = new StringBuilder("PlanProcessCtrlEntity{")
                 .append("currencyUnit = '").append(currencyUnit).append('\'')
                 .append(",activeFlag = ").append(activeFlag)
-                .append(",currencyCode = ").append(currencyCode)
+                .append(",currencyCode = ").append(currencyCodeEnum)
                 .append(",feePayMethod = ").append(feePayMethod)
                 .append(",firstTxnCode = '").append(firstTxnCode).append('\'')
                 .append(",fixedTxnCode = '").append(fixedTxnCode).append('\'')

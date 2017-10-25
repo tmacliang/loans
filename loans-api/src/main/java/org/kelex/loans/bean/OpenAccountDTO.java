@@ -1,6 +1,6 @@
 package org.kelex.loans.bean;
 
-import org.kelex.loans.enumeration.CurrencyCode;
+import org.kelex.loans.enumeration.CurrencyCodeEnum;
 
 import java.io.Serializable;
 
@@ -14,17 +14,18 @@ public class OpenAccountDTO implements OpenAccountRequest, Serializable{
     private String memberId;
     private String memberType;
     private String mobilePhone;
+    private CurrencyCodeEnum currencyCode;
 
     @Override
-    public CurrencyCode getCurrencyCode() {
+    public CurrencyCodeEnum getCurrencyCode() {
         return currencyCode;
     }
 
-    public void setCurrencyCode(CurrencyCode currencyCode) {
+    public void setCurrencyCodeEnum(CurrencyCodeEnum currencyCode) {
         this.currencyCode = currencyCode;
     }
 
-    private CurrencyCode currencyCode;
+    private CurrencyCodeEnum currencyCodeEnum;
 
     @Override
     public String getProductCode() {

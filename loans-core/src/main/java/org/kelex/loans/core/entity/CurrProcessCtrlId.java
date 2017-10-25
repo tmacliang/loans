@@ -1,6 +1,6 @@
 package org.kelex.loans.core.entity;
 
-import org.kelex.loans.enumeration.CurrencyCode;
+import org.kelex.loans.enumeration.CurrencyCodeEnum;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
@@ -18,17 +18,17 @@ public class CurrProcessCtrlId implements Serializable {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "CURRENCY_CODE", nullable = false, length = 4)
-    private CurrencyCode currencyCode;
+    private CurrencyCodeEnum currencyCodeEnum;
 
     @Column(name = "UNIT", nullable = false, length = 5)
     private String unit;
 
-    public CurrencyCode getCurrencyCode() {
-        return currencyCode;
+    public CurrencyCodeEnum getCurrencyCodeEnum() {
+        return currencyCodeEnum;
     }
 
-    public void setCurrencyCode(CurrencyCode currencyCode) {
-        this.currencyCode = currencyCode;
+    public void setCurrencyCodeEnum(CurrencyCodeEnum currencyCodeEnum) {
+        this.currencyCodeEnum = currencyCodeEnum;
     }
 
     public String getUnit() {
@@ -48,19 +48,19 @@ public class CurrProcessCtrlId implements Serializable {
             return false;
         }
         CurrProcessCtrlId that = (CurrProcessCtrlId) o;
-        return currencyCode == that.currencyCode &&
+        return currencyCodeEnum == that.currencyCodeEnum &&
                 Objects.equals(unit, that.unit);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(currencyCode, unit);
+        return Objects.hash(currencyCodeEnum, unit);
     }
 
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("CurrProcessCtrlId{")
-                .append("currencyCode = ").append(currencyCode)
+                .append("currencyCode = ").append(currencyCodeEnum)
                 .append(",unit = '").append(unit).append('\'')
                 .append("}");
         return sb.toString();

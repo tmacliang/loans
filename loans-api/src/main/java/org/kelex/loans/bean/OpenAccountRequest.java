@@ -1,6 +1,6 @@
 package org.kelex.loans.bean;
 
-import org.kelex.loans.enumeration.CurrencyCode;
+import org.kelex.loans.enumeration.CurrencyCodeEnum;
 
 /**
  * Created by hechao on 2017/9/1.
@@ -40,6 +40,6 @@ public interface OpenAccountRequest {
      * 币种
      * @return
      */
-    public CurrencyCode getCurrencyCode();
+    public CurrencyCodeEnum getCurrencyCode();
 
 }

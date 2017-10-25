@@ -1,7 +1,7 @@
 package org.kelex.loans.core.entity;
 
 import org.kelex.loans.core.enumeration.FeeRateType;
-import org.kelex.loans.enumeration.CurrencyCode;
+import org.kelex.loans.enumeration.CurrencyCodeEnum;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -57,7 +57,7 @@ public class IouReceiptEntity extends DescriptionEntity implements Serializable{
 
     @Enumerated(EnumType.STRING)
     @Column(name = "CURRENCY_CODE", nullable = false, length = 4)
-    private CurrencyCode currencyCode;
+    private CurrencyCodeEnum currencyCodeEnum;
 
     @Column(name = "TXN_UUID", nullable = false, length = 64)
     private String txnUuid;
@@ -325,16 +325,16 @@ public class IouReceiptEntity extends DescriptionEntity implements Serializable{
      * 得到币种
      * @return
      */
-    public CurrencyCode getCurrencyCode() {
-        return currencyCode;
+    public CurrencyCodeEnum getCurrencyCodeEnum() {
+        return currencyCodeEnum;
     }
 
     /**
      * 设置币种
-     * @param currencyCode
+     * @param currencyCodeEnum
      */
-    public void setCurrencyCode(CurrencyCode currencyCode) {
-        this.currencyCode = currencyCode;
+    public void setCurrencyCodeEnum(CurrencyCodeEnum currencyCodeEnum) {
+        this.currencyCodeEnum = currencyCodeEnum;
     }
 
     /**
@@ -740,7 +740,7 @@ public class IouReceiptEntity extends DescriptionEntity implements Serializable{
         final StringBuilder sb = new StringBuilder("IouReceiptEntity{")
                 .append("accountId = ").append(accountId)
                 .append(",commodityCode = '").append(commodityCode).append('\'')
-                .append(",currencyCode = ").append(currencyCode)
+                .append(",currencyCode = ").append(currencyCodeEnum)
                 .append(",currentBalance = ").append(currentBalance)
                 .append(",currentTermNo = ").append(currentTermNo)
                 .append(",cycleNo = ").append(cycleNo)

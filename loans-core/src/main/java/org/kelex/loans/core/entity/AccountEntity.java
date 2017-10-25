@@ -3,7 +3,7 @@ package org.kelex.loans.core.entity;
 import org.hibernate.annotations.*;
 import org.hibernate.annotations.Cache;
 import org.kelex.loans.core.enumeration.FeeRateType;
-import org.kelex.loans.enumeration.CurrencyCode;
+import org.kelex.loans.enumeration.CurrencyCodeEnum;
 
 import javax.persistence.*;
 import javax.persistence.Entity;
@@ -79,7 +79,7 @@ public class AccountEntity extends BaseEntity{
 
     @Enumerated(EnumType.STRING)
     @Column(name = "CURRENCY_CODE", nullable = false, length = 4)
-    private CurrencyCode currencyCode;
+    private CurrencyCodeEnum currencyCodeEnum;
 
     @Column(name = "CURR_CYCLE_DATE", nullable = false)
     private LocalDate currCycleDate;
@@ -161,7 +161,7 @@ public class AccountEntity extends BaseEntity{
     }
 
     public void setLevel1ActId(Long level1ActId) {
-        level1ActId = level1ActId;
+        this.level1ActId = level1ActId;
     }
 
     public Long getLevel2ActId() {
@@ -169,7 +169,7 @@ public class AccountEntity extends BaseEntity{
     }
 
     public void setLevel2ActId(Long level2ActId) {
-        level2ActId = level2ActId;
+        this.level2ActId = level2ActId;
     }
 
     public Long getLevel3ActId() {
@@ -177,7 +177,7 @@ public class AccountEntity extends BaseEntity{
     }
 
     public void setLevel3ActId(Long level3ActId) {
-        level3ActId = level3ActId;
+        this.level3ActId = level3ActId;
     }
 
     public Long getCustomerId() {
@@ -292,12 +292,12 @@ public class AccountEntity extends BaseEntity{
         this.preferredCycleDay = preferredCycleDay;
     }
 
-    public CurrencyCode getCurrencyCode() {
-        return currencyCode;
+    public CurrencyCodeEnum getCurrencyCodeEnum() {
+        return currencyCodeEnum;
     }
 
-    public void setCurrencyCode(CurrencyCode currencyCode) {
-        this.currencyCode = currencyCode;
+    public void setCurrencyCodeEnum(CurrencyCodeEnum currencyCodeEnum) {
+        this.currencyCodeEnum = currencyCodeEnum;
     }
 
     public LocalDate getCurrCycleDate() {
@@ -451,7 +451,7 @@ public class AccountEntity extends BaseEntity{
                 .append(",creditLimit = ").append(creditLimit)
                 .append(",currCycleDate = ").append(currCycleDate)
                 .append(",currDueDate = ").append(currDueDate)
-                .append(",currencyCode = ").append(currencyCode)
+                .append(",currencyCode = ").append(currencyCodeEnum)
                 .append(",currentBalance = ").append(currentBalance)
                 .append(",currentCycleNo = ").append(currentCycleNo)
                 .append(",customerId = ").append(customerId)

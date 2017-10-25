@@ -1,7 +1,7 @@
 package org.kelex.loans.core.entity;
 
 import org.kelex.loans.core.enumeration.FlowType;
-import org.kelex.loans.enumeration.CurrencyCode;
+import org.kelex.loans.enumeration.CurrencyCodeEnum;
 
 import javax.persistence.*;
 import javax.persistence.EnumType;
@@ -32,7 +32,7 @@ public class BalCompValEntity extends BaseEntity implements Serializable{
     @Basic
     @Enumerated(EnumType.STRING)
     @Column(name = "CURRENCY_CODE", nullable = false, length = 5)
-    private CurrencyCode currencyCode;
+    private CurrencyCodeEnum currencyCodeEnum;
 
     @Basic
     @Column(name = "CTD_BALANCE", nullable = false, precision = 2)
@@ -98,16 +98,16 @@ public class BalCompValEntity extends BaseEntity implements Serializable{
      * 得到币种
      * @return
      */
-    public CurrencyCode getCurrencyCode() {
-        return currencyCode;
+    public CurrencyCodeEnum getCurrencyCodeEnum() {
+        return currencyCodeEnum;
     }
 
     /**
      * 设置币种
-     * @param currencyCode
+     * @param currencyCodeEnum
      */
-    public void setCurrencyCode(CurrencyCode currencyCode) {
-        this.currencyCode = currencyCode;
+    public void setCurrencyCodeEnum(CurrencyCodeEnum currencyCodeEnum) {
+        this.currencyCodeEnum = currencyCodeEnum;
     }
 
     /**
@@ -168,7 +168,7 @@ public class BalCompValEntity extends BaseEntity implements Serializable{
         final StringBuilder sb = new StringBuilder("BalCompValEntity{")
                 .append("balType = '").append(balType).append('\'')
                 .append(",ctdBalance = ").append(ctdBalance)
-                .append(",currencyCode = ").append(currencyCode)
+                .append(",currencyCode = ").append(currencyCodeEnum)
                 .append(",flowType = ").append(flowType)
                 .append(",id = ").append(id)
                 .append(",oldBalance = ").append(oldBalance)

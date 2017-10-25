@@ -43,7 +43,7 @@ public class CycleService extends TransactionService<RetailRequest> {
 
     public List next(AccountEntity account, CycleSummaryEntity cycle, IouReceiptEntity iou, LocalDate businessDate, TransactionContext context) {
 
-        if (Objects.equals(cycle.getId().getCycleNo(), iou.getCycleNo())) {
+        if (!Objects.equals(cycle.getId().getCycleNo(), iou.getCycleNo())) {
             throw new IllegalArgumentException("cycle.cycleNo != iou.cycleNo");
         }
 
@@ -133,7 +133,7 @@ public class CycleService extends TransactionService<RetailRequest> {
         txn.setMerchantName(iou.getMerchantName());
         txn.setOrderNo(iou.getOrderNo());
         txn.setFlowType(txnProfile.getFlowType());
-        txn.setCurrencyCode(iou.getCurrencyCode());
+        txn.setCurrencyCodeEnum(iou.getCurrencyCodeEnum());
         txn.setTxnAmt(currAmt);
         txn.setPostingAmt(currAmt);
         txn.setOutstandingDeductAmt(iou.getOutstandingTxnAmt());
@@ -219,7 +219,7 @@ public class CycleService extends TransactionService<RetailRequest> {
         fee.setGenFeeAmt(BigDecimal.ZERO);
         fee.setGenTxnSummaryNo(txnId.getTxnSummaryNo());
         fee.setReversalAmt(BigDecimal.ZERO);
-        fee.setCurrencyCode(txn.getCurrencyCode());
+        fee.setCurrencyCodeEnum(txn.getCurrencyCodeEnum());
         fee.setFlowType(feeProfile.getFlowType());
         fee.setCustomerGenFlag(feeProfile.getCustomerGenFlag());
         fee.setTxnDate(businessDate);

@@ -18,15 +18,17 @@ public class TransactionContext {
 
     private Map<Object, Object> attributes = new HashMap<>();
 
-    public TransactionContext(){
+    public TransactionContext() {
 
     }
 
-    public IdWorker getIdWorker(){
+    public IdWorker getIdWorker() {
         return getParent().getIdWorker();
     }
+
     /**
      * 得到父级设备上下文
+     *
      * @return
      * @see ServerApplicationContext
      */
@@ -36,28 +38,29 @@ public class TransactionContext {
 
     /**
      * 得到数据仓库代理
+     *
      * @return
      */
-    public synchronized RepositoryProxy getRepository(){
-        if(repository == null){
+    public synchronized RepositoryProxy getRepository() {
+        if (repository == null) {
             repository = new JapRepositoryProxy(getParent());
         }
         return repository;
     }
 
-    public void setAttribute(Object name, Object attr){
+    public void setAttribute(Object name, Object attr) {
         attributes.put(name, attr);
     }
 
-    public void romveAttribute(Object name){
+    public void romveAttribute(Object name) {
         attributes.remove(name);
     }
 
-    public Object getAttribute(Object name){
+    public Object getAttribute(Object name) {
         return attributes.get(name);
     }
 
-    public Set<Object> getAttributeNames(){
+    public Set<Object> getAttributeNames() {
         return attributes.keySet();
     }
 }

@@ -1,6 +1,6 @@
 package org.kelex.loans.bean;
 
-import org.kelex.loans.enumeration.CurrencyCode;
+import org.kelex.loans.enumeration.CurrencyCodeEnum;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -20,7 +20,7 @@ public class RetailDTO implements RetailRequest, Serializable{
 
     private Integer totalTerms;
 
-    private CurrencyCode currencyCode;
+    private CurrencyCodeEnum currencyCode;
 
     private String merchantName;
 
@@ -65,11 +65,11 @@ public class RetailDTO implements RetailRequest, Serializable{
     }
 
     @Override
-    public CurrencyCode getCurrencyCode() {
+    public CurrencyCodeEnum getCurrencyCode() {
         return currencyCode;
     }
 
-    public void setCurrencyCode(CurrencyCode currencyCode) {
+    public void setCurrencyCode(CurrencyCodeEnum currencyCode) {
         this.currencyCode = currencyCode;
     }
 

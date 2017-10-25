@@ -1,6 +1,6 @@
 package org.kelex.loans.bean;
 
-import org.kelex.loans.enumeration.CurrencyCode;
+import org.kelex.loans.enumeration.CurrencyCodeEnum;
 
 import java.math.BigDecimal;
 
@@ -12,5 +12,5 @@ public interface PaymentOrderRequest {
     String getPaymentOrderNo();
     String getPaymentType();
     BigDecimal getPaymentAmount();
-    CurrencyCode getCurrencyCode();
+    CurrencyCodeEnum getCurrencyCodeEnum();
 }

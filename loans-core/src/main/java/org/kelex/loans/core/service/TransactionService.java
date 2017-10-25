@@ -15,13 +15,13 @@ public abstract class TransactionService<T> {
 
     protected abstract void doTransaction(TransactionRequestContext<? extends T> context) throws Exception;
 
-    protected void commit(TransactionRequestContext<? extends T> context){
+    protected void commit(TransactionRequestContext<? extends T> context) {
         RepositoryProxy repository = context.getRepository();
         repository.commit();
     }
 
     @Transactional(rollbackFor = Exception.class)
-    public void process(TransactionRequestContext<? extends T> context) throws Exception{
+    public void process(TransactionRequestContext<? extends T> context) throws Exception {
         checkArguments(context);
         checkBusinessLogic(context);
         doTransaction(context);

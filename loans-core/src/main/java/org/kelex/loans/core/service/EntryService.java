@@ -3,7 +3,7 @@ package org.kelex.loans.core.service;
 import org.kelex.loans.core.cache.ActiveCache;
 import org.kelex.loans.core.entity.*;
 import org.kelex.loans.core.repository.*;
-import org.kelex.loans.enumeration.CurrencyCode;
+import org.kelex.loans.enumeration.CurrencyCodeEnum;
 import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
@@ -46,6 +46,9 @@ public class EntryService {
 
     @Inject
     private PaymentProcessCtrlRepository paymentProcessCtrlRepository;
+
+    @Inject
+    private ActCreditDataRepository actcreditdatarepository;
 
     public static String getKey(BaseEntity entity, String... strings) {
         return getKey(entity.getClass(), strings);
@@ -193,7 +196,7 @@ public class EntryService {
      * @param repository
      * @return
      */
-    public CurrProcessCtrlEntity findOneCurrProcessCtrl(CurrencyCode code, String unit, RepositoryProxy repository) {
+    public CurrProcessCtrlEntity findOneCurrProcessCtrl(CurrencyCodeEnum code, String unit, RepositoryProxy repository) {
         String key = getKey(CurrProcessCtrlEntity.class, code.name(), unit);
         CurrProcessCtrlEntity entity = fromCache(key, CurrProcessCtrlEntity.class, repository);
         if (entity != null) {
@@ -202,7 +205,7 @@ public class EntryService {
 
         //TODO:扩展Repository.findOne()方法支持多参数
         CurrProcessCtrlId ctrlId = new CurrProcessCtrlId();
-        ctrlId.setCurrencyCode(code);
+        ctrlId.setCurrencyCodeEnum(code);
         ctrlId.setUnit(unit);
         entity = currProcessCtrlRepository.findOne(ctrlId);
         return toCache(key, entity, repository);
@@ -325,4 +328,23 @@ public class EntryService {
         entity = paymentProcessCtrlRepository.findOne(ctrlId);
         return toCache(key, entity, repository);
     }
+
+
+    /**
+     * 查询额度
+     *
+     * @param accountId
+     * @param repository
+     * @return
+     */
+    public ActCreditDataEntity findOneActCreditData(Long accountId, RepositoryProxy repository) {
+        String key = getKey(ActCreditDataEntity.class, accountId.toString());
+        ActCreditDataEntity entity = fromCache(key, ActCreditDataEntity.class, repository);
+        if (entity != null) {
+            return entity;
+        }
+        entity = actcreditdatarepository.findOne(accountId);
+        return toCache(key, entity, repository);
+    }
+
 }
