@@ -12,5 +12,5 @@ public interface PaymentOrderRequest {
     String getPaymentOrderNo();
     String getPaymentType();
     BigDecimal getPaymentAmount();
-    CurrencyCodeEnum getCurrencyCodeEnum();
+    CurrencyCodeEnum getCurrencyCode();
 }

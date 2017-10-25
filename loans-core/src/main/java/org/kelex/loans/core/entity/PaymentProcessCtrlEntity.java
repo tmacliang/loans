@@ -31,7 +31,7 @@ public class PaymentProcessCtrlEntity extends BaseEntity implements Serializable
     @Basic
     @Enumerated(EnumType.STRING)
     @Column(name = "CURRENCY_CODE", nullable = false)
-    private CurrencyCodeEnum currencyCodeEnum;
+    private CurrencyCodeEnum currencyCode;
 
     @Basic
     @Column(name = "CURRENCY_UNIT", nullable = false)
@@ -69,12 +69,12 @@ public class PaymentProcessCtrlEntity extends BaseEntity implements Serializable
         this.statusType = statusType;
     }
 
-    public CurrencyCodeEnum getCurrencyCodeEnum() {
-        return currencyCodeEnum;
+    public CurrencyCodeEnum getCurrencyCode() {
+        return currencyCode;
     }
 
-    public void setCurrencyCodeEnum(CurrencyCodeEnum currencyCodeEnum) {
-        this.currencyCodeEnum = currencyCodeEnum;
+    public void setCurrencyCode(CurrencyCodeEnum currencyCode) {
+        this.currencyCode = currencyCode;
     }
 
     public String getCurrencyUnit() {
@@ -93,7 +93,7 @@ public class PaymentProcessCtrlEntity extends BaseEntity implements Serializable
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("PaymentProcessCtrlEntity{")
-                .append("currencyCode = ").append(currencyCodeEnum)
+                .append("currencyCode = ").append(currencyCode)
                 .append(",currencyUnit = '").append(currencyUnit).append('\'')
                 .append(",id = ").append(id)
                 .append(",initStatusCode = '").append(initStatusCode).append('\'')

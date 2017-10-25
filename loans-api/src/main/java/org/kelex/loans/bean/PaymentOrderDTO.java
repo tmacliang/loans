@@ -19,7 +19,7 @@ public class PaymentOrderDTO implements PaymentOrderRequest, Serializable {
 
     private BigDecimal paymentAmount;
 
-    private CurrencyCodeEnum currencyCodeEnum;
+    private CurrencyCodeEnum currencyCode;
 
     public void setAccountId(Long accountId) {
         this.accountId = accountId;
@@ -37,8 +37,8 @@ public class PaymentOrderDTO implements PaymentOrderRequest, Serializable {
         this.paymentAmount = paymentAmount;
     }
 
-    public void setCurrencyCodeEnum(CurrencyCodeEnum currencyCodeEnum) {
-        this.currencyCodeEnum = currencyCodeEnum;
+    public void setCurrencyCodeEnum(CurrencyCodeEnum currencyCode) {
+        this.currencyCode = currencyCode;
     }
 
     @Override
@@ -61,7 +61,8 @@ public class PaymentOrderDTO implements PaymentOrderRequest, Serializable {
         return paymentAmount;
     }
 
-    public CurrencyCodeEnum getCurrencyCodeEnum() {
-        return currencyCodeEnum;
+    @Override
+    public CurrencyCodeEnum getCurrencyCode() {
+        return currencyCode;
     }
 }

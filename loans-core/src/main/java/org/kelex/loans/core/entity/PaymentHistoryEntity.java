@@ -55,7 +55,7 @@ public class PaymentHistoryEntity extends BaseEntity implements Serializable{
 
     @Basic
     @Column(name = "CURRENCY_CODE", nullable = false, length = 4)
-    private CurrencyCodeEnum currencyCodeEnum;
+    private CurrencyCodeEnum currencyCode;
 
     @Basic
     @Column(name = "PAYMENT_METHOD", nullable = false, length = 5)
@@ -153,12 +153,12 @@ public class PaymentHistoryEntity extends BaseEntity implements Serializable{
         this.paymentAmt = paymentAmt;
     }
 
-    public CurrencyCodeEnum getCurrencyCodeEnum() {
-        return currencyCodeEnum;
+    public CurrencyCodeEnum getCurrencyCode() {
+        return currencyCode;
     }
 
-    public void setCurrencyCodeEnum(CurrencyCodeEnum currencyCodeEnum) {
-        this.currencyCodeEnum = currencyCodeEnum;
+    public void setCurrencyCode(CurrencyCodeEnum currencyCode) {
+        this.currencyCode = currencyCode;
     }
 
     public String getPaymentMethod() {
