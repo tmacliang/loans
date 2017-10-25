@@ -7,12 +7,12 @@ import java.math.BigDecimal;
 /**
  * Created by hechao on 2017/10/18.
  */
-public interface PaymentOrderRequest {
+public interface PrePaymentRequest {
     Long getAccountId();
 
     String getPaymentOrderNo();
 
-    String getPaymentStatusCode();
+    String getPaymentType();
 
     BigDecimal getPaymentAmount();
 

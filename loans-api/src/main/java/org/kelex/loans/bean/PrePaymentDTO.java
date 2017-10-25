@@ -8,14 +8,14 @@ import java.math.BigDecimal;
 /**
  * Created by hechao on 2017/10/18.
  */
-public class PaymentOrderDTO implements PaymentOrderRequest, Serializable {
+public class PrePaymentDTO implements PrePaymentRequest, Serializable {
     private static final long serialVersionUID = 285935829537560108L;
 
     private Long accountId;
 
     private String paymentOrderNo;
 
-    private String paymentStatusCode;
+    private String paymentType;
 
     private BigDecimal paymentAmount;
 
@@ -29,8 +29,8 @@ public class PaymentOrderDTO implements PaymentOrderRequest, Serializable {
         this.paymentOrderNo = paymentOrderNo;
     }
 
-    public void setPaymentStatusCode(String paymentStatusCode) {
-        this.paymentStatusCode = paymentStatusCode;
+    public void setPaymentType(String paymentType) {
+        this.paymentType = paymentType;
     }
 
     public void setPaymentAmount(BigDecimal paymentAmount) {
@@ -52,8 +52,8 @@ public class PaymentOrderDTO implements PaymentOrderRequest, Serializable {
     }
 
     @Override
-    public String getPaymentStatusCode() {
-        return paymentStatusCode;
+    public String getPaymentType() {
+        return paymentType;
     }
 
     @Override

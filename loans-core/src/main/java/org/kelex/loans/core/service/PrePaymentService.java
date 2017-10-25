@@ -2,6 +2,7 @@ package org.kelex.loans.core.service;
 
 import org.kelex.loans.ArgumentMessageEnum;
 import org.kelex.loans.bean.PaymentOrderRequest;
+import org.kelex.loans.bean.PrePaymentRequest;
 import org.kelex.loans.core.ServerRuntimeException;
 import org.kelex.loans.core.context.TransactionRequestContext;
 import org.kelex.loans.core.dto.RequestDTO;
@@ -28,7 +29,7 @@ import static java.math.BigDecimal.ZERO;
  * Created by licl1 on 2017/10/25.
  */
 @Service
-public class PrePaymentService extends TransactionService<PaymentOrderRequest> {
+public class PrePaymentService extends TransactionService<PrePaymentRequest> {
 
     @Inject
     private PaymentHistoryRepository paymentHistoryRepository;
@@ -40,9 +41,9 @@ public class PrePaymentService extends TransactionService<PaymentOrderRequest> {
     private EntryService entryService;
 
     @Override
-    protected void checkArguments(TransactionRequestContext<? extends PaymentOrderRequest> context) throws Exception {
-        RequestDTO<? extends PaymentOrderRequest> request = context.getRequest();
-        PaymentOrderRequest data = request.getData();
+    protected void checkArguments(TransactionRequestContext<? extends PrePaymentRequest> context) throws Exception {
+        RequestDTO<? extends PrePaymentRequest> request = context.getRequest();
+        PrePaymentRequest data = request.getData();
         AssertUtils.notNull(data.getAccountId(), ArgumentMessageEnum.ERROR_ACCOUNT_ISNULL);
         AssertUtils.notNull(data.getPaymentOrderNo(), ArgumentMessageEnum.ERROR_PAYMENTORDERNO_ISNULL);
         AssertUtils.notNull(data.getPaymentType(), ArgumentMessageEnum.ERROR_PAYMENTTYPE_ISNULL);
@@ -53,10 +54,10 @@ public class PrePaymentService extends TransactionService<PaymentOrderRequest> {
     }
 
     @Override
-    protected void checkBusinessLogic(TransactionRequestContext<? extends PaymentOrderRequest> context) throws Exception {
-        RequestDTO<? extends PaymentOrderRequest> request = context.getRequest();
+    protected void checkBusinessLogic(TransactionRequestContext<? extends PrePaymentRequest> context) throws Exception {
+        RequestDTO<? extends PrePaymentRequest> request = context.getRequest();
         RepositoryProxy repository = context.getRepository();
-        PaymentOrderRequest data = request.getData();
+        PrePaymentRequest data = request.getData();
         Optional<PaymentHistoryEntity> paymentHistoryOpt = paymentHistoryRepository.findOneByPaymentOrderNo(data.getPaymentOrderNo());
         if (paymentHistoryOpt.isPresent()) {
             throw new ServerRuntimeException(500, "duplicate exception");
@@ -76,15 +77,15 @@ public class PrePaymentService extends TransactionService<PaymentOrderRequest> {
     }
 
     @Override
-    protected void doTransaction(TransactionRequestContext<? extends PaymentOrderRequest> context) throws Exception {
+    protected void doTransaction(TransactionRequestContext<? extends PrePaymentRequest> context) throws Exception {
         createPaymentHistory(context);
     }
 
-    private PaymentHistoryEntity createPaymentHistory(TransactionRequestContext<? extends PaymentOrderRequest> context) {
-        RequestDTO<? extends PaymentOrderRequest> request = context.getRequest();
+    private PaymentHistoryEntity createPaymentHistory(TransactionRequestContext<? extends PrePaymentRequest> context) {
+        RequestDTO<? extends PrePaymentRequest> request = context.getRequest();
         RepositoryProxy repository = context.getRepository();
         LocalDate businessDate = request.getBusinessDate();
-        PaymentOrderRequest data = request.getData();
+        PrePaymentRequest data = request.getData();
         CurrProcessCtrlEntity currProcessCtrl = (CurrProcessCtrlEntity) context.getAttribute(CurrProcessCtrlEntity.class);
         AccountEntity account = (AccountEntity) context.getAttribute(AccountEntity.class);
         BigDecimal paymentAmount = data.getPaymentAmount().multiply(BigDecimal.ONE.scaleByPowerOfTen(currProcessCtrl.getPower()));

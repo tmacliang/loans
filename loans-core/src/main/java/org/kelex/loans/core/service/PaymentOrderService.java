@@ -48,7 +48,7 @@ public class PaymentOrderService extends TransactionService<PaymentOrderRequest>
         PaymentOrderRequest data = request.getData();
         AssertUtils.notNull(data.getAccountId(), ArgumentMessageEnum.ERROR_ACCOUNT_ISNULL);
         AssertUtils.notNull(data.getPaymentOrderNo(), ArgumentMessageEnum.ERROR_PAYMENTORDERNO_ISNULL);
-        AssertUtils.notNull(data.getPaymentType(), ArgumentMessageEnum.ERROR_PAYMENTTYPE_ISNULL);
+        AssertUtils.notNull(data.getPaymentStatusCode(), ArgumentMessageEnum.ERROR_PAYMENTTYPE_ISNULL);
         AssertUtils.notNull(data.getPaymentAmount(), ArgumentMessageEnum.ERROR_PAYMENTAMOUNT_ISNULL);
         AssertUtils.notNull(data.getCurrencyCode(), ArgumentMessageEnum.ERROR_CURRENCYCODE_ISNULL);
         AssertUtils.notLessOrEqualThan(data.getPaymentAmount(), ZERO, ArgumentMessageEnum.ERROR_MIN_VALUE);
