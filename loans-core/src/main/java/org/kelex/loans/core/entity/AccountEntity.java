@@ -79,7 +79,7 @@ public class AccountEntity extends BaseEntity{
 
     @Enumerated(EnumType.STRING)
     @Column(name = "CURRENCY_CODE", nullable = false, length = 4)
-    private CurrencyCodeEnum currencyCodeEnum;
+    private CurrencyCodeEnum currencyCode;
 
     @Column(name = "CURR_CYCLE_DATE", nullable = false)
     private LocalDate currCycleDate;
@@ -292,12 +292,12 @@ public class AccountEntity extends BaseEntity{
         this.preferredCycleDay = preferredCycleDay;
     }
 
-    public CurrencyCodeEnum getCurrencyCodeEnum() {
-        return currencyCodeEnum;
+    public CurrencyCodeEnum getCurrencyCode() {
+        return currencyCode;
     }
 
-    public void setCurrencyCodeEnum(CurrencyCodeEnum currencyCodeEnum) {
-        this.currencyCodeEnum = currencyCodeEnum;
+    public void setCurrencyCode(CurrencyCodeEnum currencyCode) {
+        this.currencyCode = currencyCode;
     }
 
     public LocalDate getCurrCycleDate() {
@@ -451,7 +451,7 @@ public class AccountEntity extends BaseEntity{
                 .append(",creditLimit = ").append(creditLimit)
                 .append(",currCycleDate = ").append(currCycleDate)
                 .append(",currDueDate = ").append(currDueDate)
-                .append(",currencyCode = ").append(currencyCodeEnum)
+                .append(",currencyCode = ").append(currencyCode)
                 .append(",currentBalance = ").append(currentBalance)
                 .append(",currentCycleNo = ").append(currentCycleNo)
                 .append(",customerId = ").append(customerId)

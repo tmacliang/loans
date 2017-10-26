@@ -59,7 +59,7 @@ public class TxnSummaryEntity extends DescriptionEntity {
 
     @Enumerated(value = EnumType.STRING)
     @Column(name = "CURRENCY_CODE", nullable = false, length = 4)
-    private CurrencyCodeEnum currencyCodeEnum;
+    private CurrencyCodeEnum currencyCode;
 
     @Enumerated(value = EnumType.STRING)
     @Column(name = "FLOW_TYPE", nullable = false, length = 1)
@@ -197,12 +197,12 @@ public class TxnSummaryEntity extends DescriptionEntity {
         this.orderNo = orderNo;
     }
 
-    public CurrencyCodeEnum getCurrencyCodeEnum() {
-        return currencyCodeEnum;
+    public CurrencyCodeEnum getCurrencyCode() {
+        return currencyCode;
     }
 
-    public void setCurrencyCodeEnum(CurrencyCodeEnum currencyCodeEnum) {
-        this.currencyCodeEnum = currencyCodeEnum;
+    public void setCurrencyCode(CurrencyCodeEnum currencyCode) {
+        this.currencyCode = currencyCode;
     }
 
     public FlowType getFlowType() {
@@ -294,7 +294,7 @@ public class TxnSummaryEntity extends DescriptionEntity {
     public String toString() {
         final StringBuilder sb = new StringBuilder("TxnSummaryEntity{")
                 .append("actTypeId = '").append(actTypeId).append('\'')
-                .append(",currencyCode = ").append(currencyCodeEnum)
+                .append(",currencyCode = ").append(currencyCode)
                 .append(",customerGenFlag = ").append(customerGenFlag)
                 .append(",customerId = ").append(customerId)
                 .append(",flowType = ").append(flowType)
