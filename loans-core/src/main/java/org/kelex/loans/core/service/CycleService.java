@@ -133,7 +133,7 @@ public class CycleService extends TransactionService<RetailRequest> {
         txn.setMerchantName(iou.getMerchantName());
         txn.setOrderNo(iou.getOrderNo());
         txn.setFlowType(txnProfile.getFlowType());
-        txn.setCurrencyCodeEnum(iou.getCurrencyCodeEnum());
+        txn.setCurrencyCode(iou.getCurrencyCodeEnum());
         txn.setTxnAmt(currAmt);
         txn.setPostingAmt(currAmt);
         txn.setOutstandingDeductAmt(iou.getOutstandingTxnAmt());
@@ -219,7 +219,7 @@ public class CycleService extends TransactionService<RetailRequest> {
         fee.setGenFeeAmt(BigDecimal.ZERO);
         fee.setGenTxnSummaryNo(txnId.getTxnSummaryNo());
         fee.setReversalAmt(BigDecimal.ZERO);
-        fee.setCurrencyCodeEnum(txn.getCurrencyCodeEnum());
+        fee.setCurrencyCode(txn.getCurrencyCode());
         fee.setFlowType(feeProfile.getFlowType());
         fee.setCustomerGenFlag(feeProfile.getCustomerGenFlag());
         fee.setTxnDate(businessDate);

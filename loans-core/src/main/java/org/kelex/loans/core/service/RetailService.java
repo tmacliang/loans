@@ -155,7 +155,7 @@ public class RetailService extends TransactionService<RetailRequest> {
         iou.setOutstandingTerms(planProfile.getPlanTerms());
         iou.setIouTerms(planProfile.getPlanTerms());
         iou.setStatusCode(planProfile.getInitStatusCode());
-        iou.setCurrencyCodeEnum(account.getCurrencyCodeEnum());
+        iou.setCurrencyCodeEnum(account.getCurrencyCode());
 
         iou.setPostingFeeAmt(BigDecimal.ZERO);
         iou.setCurrentBalance(BigDecimal.ZERO);
