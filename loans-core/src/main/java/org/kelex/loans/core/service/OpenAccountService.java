@@ -17,6 +17,7 @@ import javax.inject.Inject;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Objects;
+import static java.math.BigDecimal.ZERO;
 
 /**
  * Created by hechao on 2017/8/31.
@@ -191,6 +192,11 @@ public class OpenAccountService extends TransactionService<OpenAccountRequest> {
         account.setInterestFreeDays(actProcCtrl.getDefaultInterestFreeDays());
         account.setInDlqFlag(false);
         account.setLevel1ActId(accountId);
+        account.setTotalDlqFeeAmt(ZERO);
+        account.setTotalInterestAmt(ZERO);
+        account.setTotalOtherFeeAmt(ZERO);
+        account.setTotalTxnFeeAmt(ZERO);
+        account.setTotalServiceFeeAmt(ZERO);
         return account;
     }
 

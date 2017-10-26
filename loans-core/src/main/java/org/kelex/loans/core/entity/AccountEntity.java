@@ -8,6 +8,7 @@ import org.kelex.loans.enumeration.CurrencyCodeEnum;
 import javax.persistence.*;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
@@ -136,6 +137,26 @@ public class AccountEntity extends BaseEntity{
 
     @Column(name = "WAIVE_OTHER_FEE_END_DATE", nullable = false)
     private LocalDate waiveOtherFeeEndDate;
+
+    @NotNull
+    @Column(name = "total_interest_amt", precision = 17, scale = 2, nullable = false)
+    private BigDecimal totalInterestAmt;
+
+    @NotNull
+    @Column(name = "total_txn_fee_amt", precision = 17, scale = 2, nullable = false)
+    private BigDecimal totalTxnFeeAmt;
+
+    @NotNull
+    @Column(name = "total_service_fee_amt", precision = 17, scale = 2, nullable = false)
+    private BigDecimal totalServiceFeeAmt;
+
+    @NotNull
+    @Column(name = "total_dlq_fee_amt", precision = 17, scale = 2, nullable = false)
+    private BigDecimal totalDlqFeeAmt;
+
+    @NotNull
+    @Column(name = "total_other_fee_amt", precision = 17, scale = 2, nullable = false)
+    private BigDecimal totalOtherFeeAmt;
 
     @Transient
     private CycleSummaryId cycleId;
@@ -436,6 +457,50 @@ public class AccountEntity extends BaseEntity{
         this.waiveOtherFeeEndDate = waiveOtherFeeEndDate;
     }
 
+    public BigDecimal getTotalInterestAmt() {
+        return totalInterestAmt;
+    }
+
+    public void setTotalInterestAmt(BigDecimal totalInterestAmt) {
+        this.totalInterestAmt = totalInterestAmt;
+    }
+
+    public BigDecimal getTotalTxnFeeAmt() {
+        return totalTxnFeeAmt;
+    }
+
+    public void setTotalTxnFeeAmt(BigDecimal totalTxnFeeAmt) {
+        this.totalTxnFeeAmt = totalTxnFeeAmt;
+    }
+
+    public BigDecimal getTotalServiceFeeAmt() {
+        return totalServiceFeeAmt;
+    }
+
+    public void setTotalServiceFeeAmt(BigDecimal totalServiceFeeAmt) {
+        this.totalServiceFeeAmt = totalServiceFeeAmt;
+    }
+
+    public BigDecimal getTotalDlqFeeAmt() {
+        return totalDlqFeeAmt;
+    }
+
+    public void setTotalDlqFeeAmt(BigDecimal totalDlqFeeAmt) {
+        this.totalDlqFeeAmt = totalDlqFeeAmt;
+    }
+
+    public BigDecimal getTotalOtherFeeAmt() {
+        return totalOtherFeeAmt;
+    }
+
+    public void setTotalOtherFeeAmt(BigDecimal totalOtherFeeAmt) {
+        this.totalOtherFeeAmt = totalOtherFeeAmt;
+    }
+
+    public void setCycleId(CycleSummaryId cycleId) {
+        this.cycleId = cycleId;
+    }
+
     @Override
     public Object primaryKey() {
         return accountId;
@@ -443,49 +508,52 @@ public class AccountEntity extends BaseEntity{
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("AccountEntity{")
-                .append("accountId = ").append(accountId)
-                .append(",actTypeId = '").append(actTypeId).append('\'')
-                .append(",autoStatusCode = '").append(autoStatusCode).append('\'')
-                .append(",autoStatusSetDate = ").append(autoStatusSetDate)
-                .append(",creditLimit = ").append(creditLimit)
-                .append(",currCycleDate = ").append(currCycleDate)
-                .append(",currDueDate = ").append(currDueDate)
-                .append(",currencyCode = ").append(currencyCode)
-                .append(",currentBalance = ").append(currentBalance)
-                .append(",currentCycleNo = ").append(currentCycleNo)
-                .append(",customerId = ").append(customerId)
-                .append(",cycleId = ").append(cycleId)
-                .append(",cycleTriggerSeq = ").append(cycleTriggerSeq)
-                .append(",dlqFeeRate = ").append(dlqFeeRate)
-                .append(",inDlqFlag = ").append(inDlqFlag)
-                .append(",interestFreeDays = ").append(interestFreeDays)
-                .append(",interestRate = ").append(interestRate)
-                .append(",Level1ActId = ").append(level1ActId)
-                .append(",level1ActId = ").append(getLevel1ActId())
-                .append(",Level2ActId = ").append(level2ActId)
-                .append(",level2ActId = ").append(getLevel2ActId())
-                .append(",Level3ActId = ").append(level3ActId)
-                .append(",level3ActId = ").append(getLevel3ActId())
-                .append(",levelNo = ").append(levelNo)
-                .append(",manuStatusCode = '").append(manuStatusCode).append('\'')
-                .append(",manuStatusSetDate = ").append(manuStatusSetDate)
-                .append(",outstandingTxnAmt = ").append(outstandingTxnAmt)
-                .append(",preferredCycleDay = ").append(preferredCycleDay)
-                .append(",prevCycleDate = ").append(prevCycleDate)
-                .append(",productId = '").append(productId).append('\'')
-                .append(",txnFeeRate = ").append(txnFeeRate)
-                .append(",txnFeeRateType = ").append(txnFeeRateType)
-                .append(",waiveInterestEndDate = ").append(waiveInterestEndDate)
-                .append(",waiveInterestFlag = ").append(waiveInterestFlag)
-                .append(",waiveInterestStartDate = ").append(waiveInterestStartDate)
-                .append(",waiveOtherFeeEndDate = ").append(waiveOtherFeeEndDate)
-                .append(",waiveOtherFeeFlag = ").append(waiveOtherFeeFlag)
-                .append(",waiveOtherFeeStartDate = ").append(waiveOtherFeeStartDate)
-                .append(",waiveTxnFeeEndDate = ").append(waiveTxnFeeEndDate)
-                .append(",waiveTxnFeeFlag = ").append(waiveTxnFeeFlag)
-                .append(",waiveTxnFeeStartDate = ").append(waiveTxnFeeStartDate)
-                .append("}, ").append(super.toString()).append('}');
+        final StringBuffer sb = new StringBuffer("AccountEntity{");
+        sb.append("accountId=").append(accountId);
+        sb.append(", levelNo=").append(levelNo);
+        sb.append(", level1ActId=").append(level1ActId);
+        sb.append(", level2ActId=").append(level2ActId);
+        sb.append(", level3ActId=").append(level3ActId);
+        sb.append(", customerId=").append(customerId);
+        sb.append(", autoStatusCode='").append(autoStatusCode).append('\'');
+        sb.append(", autoStatusSetDate=").append(autoStatusSetDate);
+        sb.append(", manuStatusCode='").append(manuStatusCode).append('\'');
+        sb.append(", manuStatusSetDate=").append(manuStatusSetDate);
+        sb.append(", productId='").append(productId).append('\'');
+        sb.append(", actTypeId='").append(actTypeId).append('\'');
+        sb.append(", currentBalance=").append(currentBalance);
+        sb.append(", creditLimit=").append(creditLimit);
+        sb.append(", currentCycleNo=").append(currentCycleNo);
+        sb.append(", cycleTriggerSeq=").append(cycleTriggerSeq);
+        sb.append(", outstandingTxnAmt=").append(outstandingTxnAmt);
+        sb.append(", currDueDate=").append(currDueDate);
+        sb.append(", preferredCycleDay=").append(preferredCycleDay);
+        sb.append(", currencyCode=").append(currencyCode);
+        sb.append(", currCycleDate=").append(currCycleDate);
+        sb.append(", prevCycleDate=").append(prevCycleDate);
+        sb.append(", inDlqFlag=").append(inDlqFlag);
+        sb.append(", txnFeeRateType=").append(txnFeeRateType);
+        sb.append(", txnFeeRate=").append(txnFeeRate);
+        sb.append(", interestRate=").append(interestRate);
+        sb.append(", dlqFeeRate=").append(dlqFeeRate);
+        sb.append(", interestFreeDays=").append(interestFreeDays);
+        sb.append(", waiveInterestFlag=").append(waiveInterestFlag);
+        sb.append(", waiveInterestStartDate=").append(waiveInterestStartDate);
+        sb.append(", waiveInterestEndDate=").append(waiveInterestEndDate);
+        sb.append(", waiveTxnFeeFlag=").append(waiveTxnFeeFlag);
+        sb.append(", waiveTxnFeeStartDate=").append(waiveTxnFeeStartDate);
+        sb.append(", waiveTxnFeeEndDate=").append(waiveTxnFeeEndDate);
+        sb.append(", waiveOtherFeeFlag=").append(waiveOtherFeeFlag);
+        sb.append(", waiveOtherFeeStartDate=").append(waiveOtherFeeStartDate);
+        sb.append(", waiveOtherFeeEndDate=").append(waiveOtherFeeEndDate);
+        sb.append(", totalInterestAmt=").append(totalInterestAmt);
+        sb.append(", totalTxnFeeAmt=").append(totalTxnFeeAmt);
+        sb.append(", totalServiceFeeAmt=").append(totalServiceFeeAmt);
+        sb.append(", totalDlqFeeAmt=").append(totalDlqFeeAmt);
+        sb.append(", totalOtherFeeAmt=").append(totalOtherFeeAmt);
+        sb.append(", cycleId=").append(cycleId);
+        sb.append(", imaryKey=").append(primaryKey());
+        sb.append('}');
         return sb.toString();
     }
 
