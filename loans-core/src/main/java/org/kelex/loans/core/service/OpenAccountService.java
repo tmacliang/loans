@@ -111,7 +111,7 @@ public class OpenAccountService extends TransactionService<OpenAccountRequest> {
 
         ActProcessCtrlEntity actProcCtrl = (ActProcessCtrlEntity) context.getAttribute(ActProcessCtrlEntity.class);
         AccountEntity account = createAccount(product, customer, actProcCtrl, idWorker.nextId(), businessDate);
-        account.setCurrencyCodeEnum(data.getCurrencyCode());
+        account.setCurrencyCode(data.getCurrencyCode());
         account.setCycleTriggerSeq(idWorker.nextId());
 
         ActCreditDataEntity actCreditDate = createActCreditDate(account, businessDate);
@@ -198,7 +198,7 @@ public class OpenAccountService extends TransactionService<OpenAccountRequest> {
         ActCreditDataEntity entity = new ActCreditDataEntity();
         entity.setAccountId(account.getAccountId());
         entity.setWholeFlag(true);
-        entity.setCurrencyCodeEnum(account.getCurrencyCodeEnum());
+        entity.setCurrencyCodeEnum(account.getCurrencyCode());
         entity.setCreditLimit(account.getCreditLimit());
         entity.setAvailableBalance(BigDecimal.ZERO);
         entity.setOutstandingAuthAmt(BigDecimal.ZERO);
@@ -219,7 +219,7 @@ public class OpenAccountService extends TransactionService<OpenAccountRequest> {
         embeddedId.setAccountId(account.getAccountId());
         embeddedId.setCycleNo(account.getCurrentCycleNo());
         entity.setId(embeddedId);
-        entity.setCurrencyCodeEnum(account.getCurrencyCodeEnum());
+        entity.setCurrencyCodeEnum(account.getCurrencyCode());
         entity.setNextTxnSummaryNo(1);
         entity.setCloseBalance(BigDecimal.ZERO);
         entity.setOpenBalance(BigDecimal.ZERO);

@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -53,7 +54,9 @@ public class PostingService {
 
         CycleSummaryId cycleId = acccount.getCycleId();
         CycleSummaryEntity cycle = cycleSummaryRepository.findOne(cycleId);
-        Map<String, BalCompValEntity> bcvMap = TransactionUtils.toMap(balCompValRepository.findAll(cycleId.getAccountId(), cycleId.getCycleNo()));
+
+        List<BalCompValEntity> balCompValList =  balCompValRepository.findAll(cycleId.getAccountId(), cycleId.getCycleNo());
+        Map<String, BalCompValEntity> bcvMap = TransactionUtils.toMap(balCompValList);
 
         String productId = txn.getProductId();
         String actTypeId = txn.getActTypeId();
@@ -67,7 +70,7 @@ public class PostingService {
         BigDecimal residueAmt = txn.getPostingAmt();
 
         String initBcpId = txnCtrl.getInitBcpId();
-        if (initBcpId != null) {
+        /*if (initBcpId != null) {
             BalProcessCtrlEntity initBalCtrl = entryService.findOneBalProcessCtrl(productId, actTypeId, initBcpId, repository);
             if (initBalCtrl == null) {
                 throw new SysintrException("txn init bal ctrl is no such: " + productId + ", " + actTypeId + ", " + initBcpId);
@@ -76,7 +79,7 @@ public class PostingService {
             if (initBcp == null) {
                 throw new SysintrException("txn init bal profile is no such: " + initBcpId);
             }
-        }
+        }*/
 
         BalProcessCtrlEntity balCtrl = entryService.findOneBalProcessCtrl(productId, actTypeId, txnCtrl.getBcpId(), repository);
         String bcpId = txnCtrl.getBcpId();
@@ -97,7 +100,7 @@ public class PostingService {
 
             BalCompValEntity newBcv = new BalCompValEntity();
             newBcv.setId(newBcvId);
-            newBcv.setCurrencyCodeEnum(txn.getCurrencyCodeEnum());
+            newBcv.setCurrencyCodeEnum(txn.getCurrencyCode());
             newBcv.setFlowType(bcp.getFlowType());
             newBcv.setBalType(bcp.getBalType());
             newBcv.setCtdBalance(BigDecimal.ZERO);
