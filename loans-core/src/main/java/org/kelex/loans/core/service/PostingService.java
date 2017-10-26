@@ -126,6 +126,10 @@ public class PostingService {
 
         //更新账户
         updateAccount(txn, context);
+        //更新额度信息
+        updateCreditLimit(txn, context);
+        //更新账期表
+        updateCycleSummary(txn, context);
 
 
     }
@@ -218,6 +222,19 @@ public class PostingService {
 
         actCreditData.setAvailableBalance(availableBalance);
         context.setAttribute(AccountEntity.class, actCreditData);
+    }
+
+    public void updateCycleSummary(TxnSummaryEntity txnSummary, TransactionContext context){
+        CycleSummaryEntity cycleSummary = (CycleSummaryEntity)context.getAttribute(CycleSummaryEntity.class);
+        TxnProfileEntity txnProfile = (TxnProfileEntity) context.getAttribute(TxnProfileEntity.class);
+        if(Objects.equals(txnProfile.getFlowType(), "D")){
+            //ToDO 判断是否在宽限期
+
+        }else{
+            //TODO 如果逾期需要增加判断并修改账户状态值
+
+        }
+
     }
 
 }
