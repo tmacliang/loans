@@ -1,22 +1,22 @@
 /*
 Navicat MySQL Data Transfer
 
-Source Server         : 127.0.0.1
-Source Server Version : 50717
-Source Host           : 127.0.0.1:3306
+Source Server         : localhost
+Source Server Version : 50635
+Source Host           : localhost:3306
 Source Database       : lending_system
 
 Target Server Type    : MYSQL
-Target Server Version : 50717
+Target Server Version : 50635
 File Encoding         : 65001
 
-Date: 2017-10-20 11:37:57
+Date: 2017-10-24 18:08:17
 */
 
 SET FOREIGN_KEY_CHECKS=0;
 
 -- ----------------------------
--- Table structure for account
+-- Table structure for `account`
 -- ----------------------------
 DROP TABLE IF EXISTS `account`;
 CREATE TABLE `account` (
@@ -67,7 +67,11 @@ CREATE TABLE `account` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='账户表';
 
 -- ----------------------------
--- Table structure for act_credit_data
+-- Records of account
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for `act_credit_data`
 -- ----------------------------
 DROP TABLE IF EXISTS `act_credit_data`;
 CREATE TABLE `act_credit_data` (
@@ -91,7 +95,11 @@ CREATE TABLE `act_credit_data` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='账户信用表';
 
 -- ----------------------------
--- Table structure for act_process_ctrl
+-- Records of act_credit_data
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for `act_process_ctrl`
 -- ----------------------------
 DROP TABLE IF EXISTS `act_process_ctrl`;
 CREATE TABLE `act_process_ctrl` (
@@ -115,7 +123,12 @@ CREATE TABLE `act_process_ctrl` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='账户处理控制表';
 
 -- ----------------------------
--- Table structure for bal_comp_profile
+-- Records of act_process_ctrl
+-- ----------------------------
+INSERT INTO `act_process_ctrl` VALUES ('QBAO', 'LIFE', 'CNY', 'FEN', '0.01500', '0.00050', '0.02000', '26', '10000.00', '0', null, 'SYS', '2017-10-18 19:45:30', 'SYS', '2017-10-18 19:45:30', '0');
+
+-- ----------------------------
+-- Table structure for `bal_comp_profile`
 -- ----------------------------
 DROP TABLE IF EXISTS `bal_comp_profile`;
 CREATE TABLE `bal_comp_profile` (
@@ -133,7 +146,17 @@ CREATE TABLE `bal_comp_profile` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='余额成分字典';
 
 -- ----------------------------
--- Table structure for bal_comp_val
+-- Records of bal_comp_profile
+-- ----------------------------
+INSERT INTO `bal_comp_profile` VALUES ('CRED', 'CRED', 'C', '溢缴存/还款', 'SYS', '2017-09-19 14:19:09', '0', 'SYS', '2017-09-19 14:15:16');
+INSERT INTO `bal_comp_profile` VALUES ('DEBT', 'ALL', 'C', '所有借记', 'SYS', '2017-10-18 17:55:44', '0', 'SYS', '2017-10-18 17:53:51');
+INSERT INTO `bal_comp_profile` VALUES ('DLQF', 'FEE', 'D', '违约金手续费', 'SYS', '2017-09-19 14:18:44', '0', 'SYS', '2017-09-19 14:16:46');
+INSERT INTO `bal_comp_profile` VALUES ('RETL', 'RETL', 'D', '消费', 'SYS', '2017-09-19 14:19:01', '0', 'SYS', '2017-09-19 14:12:03');
+INSERT INTO `bal_comp_profile` VALUES ('RFEE', 'FEE', 'D', '消费手续费', 'SYS', '2017-09-19 14:18:53', '0', 'SYS', '2017-09-19 14:16:29');
+INSERT INTO `bal_comp_profile` VALUES ('RINT', 'INST', 'D', '消费利息', 'SYS', '2017-09-19 14:18:58', '0', 'SYS', '2017-09-19 14:12:46');
+
+-- ----------------------------
+-- Table structure for `bal_comp_val`
 -- ----------------------------
 DROP TABLE IF EXISTS `bal_comp_val`;
 CREATE TABLE `bal_comp_val` (
@@ -155,7 +178,11 @@ CREATE TABLE `bal_comp_val` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='余额成分表';
 
 -- ----------------------------
--- Table structure for bal_process_ctrl
+-- Records of bal_comp_val
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for `bal_process_ctrl`
 -- ----------------------------
 DROP TABLE IF EXISTS `bal_process_ctrl`;
 CREATE TABLE `bal_process_ctrl` (
@@ -174,7 +201,16 @@ CREATE TABLE `bal_process_ctrl` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='产品余额控制表';
 
 -- ----------------------------
--- Table structure for curr_process_ctrl
+-- Records of bal_process_ctrl
+-- ----------------------------
+INSERT INTO `bal_process_ctrl` VALUES ('QBAO', 'LIFE', 'CRED', '溢缴存/还款', 'Y', null, 'SYS', '2017-10-17 15:24:59', '0', 'SYS', '2017-09-19 17:50:06');
+INSERT INTO `bal_process_ctrl` VALUES ('QBAO', 'LIFE', 'DLQF', '违约金', 'Y', null, 'SYS', '2017-10-17 15:25:02', '0', 'SYS', '2017-09-19 17:50:26');
+INSERT INTO `bal_process_ctrl` VALUES ('QBAO', 'LIFE', 'RETL', '消费', 'N', 'I010', 'SYS', '2017-09-19 17:59:44', '0', 'SYS', '2017-09-19 17:51:25');
+INSERT INTO `bal_process_ctrl` VALUES ('QBAO', 'LIFE', 'RFEE', '消费手续费', 'Y', null, 'SYS', '2017-10-17 15:25:03', '0', 'SYS', '2017-09-19 17:51:49');
+INSERT INTO `bal_process_ctrl` VALUES ('QBAO', 'LIFE', 'RINT', '消费利息', 'Y', null, 'SYS', '2017-10-17 15:25:05', '0', 'SYS', '2017-09-19 17:52:08');
+
+-- ----------------------------
+-- Table structure for `curr_process_ctrl`
 -- ----------------------------
 DROP TABLE IF EXISTS `curr_process_ctrl`;
 CREATE TABLE `curr_process_ctrl` (
@@ -191,7 +227,13 @@ CREATE TABLE `curr_process_ctrl` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='货币单位控制表';
 
 -- ----------------------------
--- Table structure for customer
+-- Records of curr_process_ctrl
+-- ----------------------------
+INSERT INTO `curr_process_ctrl` VALUES ('CNY', 'CNY', '0', '人民币元', 'SYS', '2017-09-25 14:05:52', '0', 'SYS', '2017-09-25 14:05:33');
+INSERT INTO `curr_process_ctrl` VALUES ('CNY', 'FEN', '-2', '人民币分', 'SYS', '2017-09-25 18:31:12', '0', 'SYS', '2017-09-21 17:25:57');
+
+-- ----------------------------
+-- Table structure for `customer`
 -- ----------------------------
 DROP TABLE IF EXISTS `customer`;
 CREATE TABLE `customer` (
@@ -211,7 +253,11 @@ CREATE TABLE `customer` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='客户表';
 
 -- ----------------------------
--- Table structure for cycle_summary
+-- Records of customer
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for `cycle_summary`
 -- ----------------------------
 DROP TABLE IF EXISTS `cycle_summary`;
 CREATE TABLE `cycle_summary` (
@@ -245,7 +291,11 @@ CREATE TABLE `cycle_summary` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='账期表';
 
 -- ----------------------------
--- Table structure for iou_receipt
+-- Records of cycle_summary
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for `iou_receipt`
 -- ----------------------------
 DROP TABLE IF EXISTS `iou_receipt`;
 CREATE TABLE `iou_receipt` (
@@ -295,7 +345,11 @@ CREATE TABLE `iou_receipt` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='借据记录表';
 
 -- ----------------------------
--- Table structure for payment_history
+-- Records of iou_receipt
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for `payment_history`
 -- ----------------------------
 DROP TABLE IF EXISTS `payment_history`;
 CREATE TABLE `payment_history` (
@@ -325,7 +379,11 @@ CREATE TABLE `payment_history` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
--- Table structure for payment_process_ctrl
+-- Records of payment_history
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for `payment_process_ctrl`
 -- ----------------------------
 DROP TABLE IF EXISTS `payment_process_ctrl`;
 CREATE TABLE `payment_process_ctrl` (
@@ -346,7 +404,12 @@ CREATE TABLE `payment_process_ctrl` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
--- Table structure for plan_process_ctrl
+-- Records of payment_process_ctrl
+-- ----------------------------
+INSERT INTO `payment_process_ctrl` VALUES ('QBAO', 'LIFE', 'PYMT', 'P010', 'PEND', 'PYMT', 'CNY', 'FEN', 'SYS', '2017-10-20 11:25:58', '0', 'SYS', '2017-10-20 11:08:31');
+
+-- ----------------------------
+-- Table structure for `plan_process_ctrl`
 -- ----------------------------
 DROP TABLE IF EXISTS `plan_process_ctrl`;
 CREATE TABLE `plan_process_ctrl` (
@@ -374,7 +437,18 @@ CREATE TABLE `plan_process_ctrl` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='交易计划控制表';
 
 -- ----------------------------
--- Table structure for plan_profile
+-- Records of plan_process_ctrl
+-- ----------------------------
+INSERT INTO `plan_process_ctrl` VALUES ('QBAO', 'LIFE', 'RIP01', 'Y', 'CNY', 'FEN', 'R011', 'R011', 'R011', '100.00', '0.05000', 'FRST', 'FULL', null, '消费不分期', 'SYS', '2017-10-13 17:02:01', '0', 'SYS', '2017-09-20 14:52:02');
+INSERT INTO `plan_process_ctrl` VALUES ('QBAO', 'LIFE', 'RIP03', 'Y', 'CNY', 'FEN', 'R010', 'R011', 'R011', '100.00', '0.06000', 'FRST', 'FULL', null, '消费分3期', 'SYS', '2017-10-13 17:13:38', '0', 'SYS', '2017-09-20 14:44:52');
+INSERT INTO `plan_process_ctrl` VALUES ('QBAO', 'LIFE', 'RIP06', 'Y', 'CNY', 'FEN', 'R010', 'R011', 'R011', '100.00', '0.07000', 'FRST', 'FULL', null, '消费分6期', 'SYS', '2017-10-13 17:02:03', '0', 'SYS', '2017-09-20 14:45:20');
+INSERT INTO `plan_process_ctrl` VALUES ('QBAO', 'LIFE', 'RIP09', 'Y', 'CNY', 'FEN', 'R010', 'R011', 'R011', '100.00', '0.08000', 'FRST', 'TERM', null, '消费分9期', 'SYS', '2017-10-13 17:04:15', '0', 'SYS', '2017-09-20 14:45:43');
+INSERT INTO `plan_process_ctrl` VALUES ('QBAO', 'LIFE', 'RIP12', 'Y', 'CNY', 'FEN', 'R010', 'R011', 'R011', '100.00', '0.09000', 'FRST', 'TERM', 'S010', '消费分12期', 'SYS', '2017-10-13 17:04:14', '0', 'SYS', '2017-09-20 14:45:56');
+INSERT INTO `plan_process_ctrl` VALUES ('QBAO', 'LIFE', 'RIP24', 'Y', 'CNY', 'FEN', 'R010', 'R011', 'R011', '100.00', '0.10000', 'FRST', 'TERM', 'S010', '消费分24期', 'SYS', '2017-10-13 14:47:19', '0', 'SYS', '2017-09-20 14:46:12');
+INSERT INTO `plan_process_ctrl` VALUES ('QBAO', 'LIFE', 'RIP36', 'Y', 'CNY', 'FEN', 'R010', 'R011', 'R011', '100.00', '0.11000', 'FRST', 'TERM', 'S010', '消费分36期', 'SYS', '2017-10-13 14:47:20', '0', 'SYS', '2017-09-20 14:46:27');
+
+-- ----------------------------
+-- Table structure for `plan_profile`
 -- ----------------------------
 DROP TABLE IF EXISTS `plan_profile`;
 CREATE TABLE `plan_profile` (
@@ -392,7 +466,18 @@ CREATE TABLE `plan_profile` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='分期计划字典';
 
 -- ----------------------------
--- Table structure for product
+-- Records of plan_profile
+-- ----------------------------
+INSERT INTO `plan_profile` VALUES ('RIP01', '1', 'ONCE', 'IOU', '消费不分期', 'SYS', '2017-10-20 10:42:46', '0', 'SYS', '2017-09-20 14:51:35');
+INSERT INTO `plan_profile` VALUES ('RIP03', '3', 'TERM', 'IOU', '消费分3期', 'SYS', '2017-10-20 10:42:47', '0', 'SYS', '2017-09-20 11:44:45');
+INSERT INTO `plan_profile` VALUES ('RIP06', '6', 'TERM', 'IOU', '消费分6期', 'SYS', '2017-10-20 10:42:48', '0', 'SYS', '2017-09-20 11:46:58');
+INSERT INTO `plan_profile` VALUES ('RIP09', '9', 'TERM', 'IOU', '消费分期9期', 'SYS', '2017-10-20 10:42:48', '0', 'SYS', '2017-10-13 17:09:47');
+INSERT INTO `plan_profile` VALUES ('RIP12', '12', 'TERM', 'IOU', '消费分12期', 'SYS', '2017-10-20 10:42:48', '0', 'SYS', '2017-09-20 11:47:20');
+INSERT INTO `plan_profile` VALUES ('RIP24', '24', 'TERM', 'IOU', '消费分24期', 'SYS', '2017-10-20 10:42:49', '0', 'SYS', '2017-09-20 11:47:40');
+INSERT INTO `plan_profile` VALUES ('RIP36', '36', 'TERM', 'IOU', '消费分36期', 'SYS', '2017-10-20 10:42:49', '0', 'SYS', '2017-09-20 14:39:13');
+
+-- ----------------------------
+-- Table structure for `product`
 -- ----------------------------
 DROP TABLE IF EXISTS `product`;
 CREATE TABLE `product` (
@@ -408,7 +493,12 @@ CREATE TABLE `product` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='产品表';
 
 -- ----------------------------
--- Table structure for status_code
+-- Records of product
+-- ----------------------------
+INSERT INTO `product` VALUES ('QBAO', 'LIFE', null, 'SYS', '2017-09-21 16:19:01', '0', 'SYS', '2017-07-20 14:05:40');
+
+-- ----------------------------
+-- Table structure for `status_code`
 -- ----------------------------
 DROP TABLE IF EXISTS `status_code`;
 CREATE TABLE `status_code` (
@@ -427,7 +517,17 @@ CREATE TABLE `status_code` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='状态码表';
 
 -- ----------------------------
--- Table structure for txn_process_ctrl
+-- Records of status_code
+-- ----------------------------
+INSERT INTO `status_code` VALUES ('BILL', 'IOU', 'N', 'BILL', 'BILL', '已经全部入账', 'SYS', '2017-10-16 19:03:48', '0', 'SYS', '2017-09-27 10:48:27');
+INSERT INTO `status_code` VALUES ('ERRO', 'PYMT', 'N', 'ERRO', 'ERRO', '还款失败', 'SYS', '2017-10-20 11:11:57', '0', 'SYS', '2017-10-20 11:11:05');
+INSERT INTO `status_code` VALUES ('ONCE', 'IOU', 'Y', 'BILL', 'BILL', '一次性入账', 'SYS', '2017-10-16 19:02:37', '0', 'SYS', '2017-10-16 19:01:55');
+INSERT INTO `status_code` VALUES ('PEND', 'PYMT', 'Y', 'ERRO', 'SUCC', '还款等待', 'SYS', '2017-10-20 11:12:51', '0', 'SYS', '2017-10-20 10:36:24');
+INSERT INTO `status_code` VALUES ('SUCC', 'PYMT', 'N', 'SUCC', 'SUCC', '还款成功', 'SYS', '2017-10-20 11:12:43', '0', 'SYS', '2017-10-20 11:12:43');
+INSERT INTO `status_code` VALUES ('TERM', 'IOU', 'Y', 'TERM', 'BILL', '分期入账', 'SYS', '2017-10-16 19:03:29', '1', 'SYS', '2017-09-27 10:44:56');
+
+-- ----------------------------
+-- Table structure for `txn_process_ctrl`
 -- ----------------------------
 DROP TABLE IF EXISTS `txn_process_ctrl`;
 CREATE TABLE `txn_process_ctrl` (
@@ -447,7 +547,30 @@ CREATE TABLE `txn_process_ctrl` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='产品交易控制表';
 
 -- ----------------------------
--- Table structure for txn_profile
+-- Records of txn_process_ctrl
+-- ----------------------------
+INSERT INTO `txn_process_ctrl` VALUES ('QBAO', 'LIFE', 'D010', null, 'CRED', 'DLQF', '违约金交易控制', 'SYS', '2017-09-19 18:06:02', '0', 'SYS', '2017-09-19 18:03:46');
+INSERT INTO `txn_process_ctrl` VALUES ('QBAO', 'LIFE', 'D050', null, 'DLQF', 'CRED', '违约金冲正交易控制', 'SYS', '2017-09-19 18:08:41', '0', 'SYS', '2017-09-19 18:06:53');
+INSERT INTO `txn_process_ctrl` VALUES ('QBAO', 'LIFE', 'D051', null, 'DLQF', 'CRED', '手工减免违约金交易控制', 'SUS', '2017-09-19 18:18:15', '0', 'SYS', '2017-09-19 18:18:15');
+INSERT INTO `txn_process_ctrl` VALUES ('QBAO', 'LIFE', 'F010', null, 'CRED', 'RFEE', '手续费交易控制', 'SYS', '2017-09-20 11:10:15', '0', 'SYS', '2017-09-20 11:05:42');
+INSERT INTO `txn_process_ctrl` VALUES ('QBAO', 'LIFE', 'F050', null, 'RFEE', 'CRED', '手续费冲正交易控制', 'SYS', '2017-09-20 11:11:20', '0', 'SYS', '2017-09-20 11:11:20');
+INSERT INTO `txn_process_ctrl` VALUES ('QBAO', 'LIFE', 'F051', null, 'RFEE', 'CRED', '手工减免手续费交易控制', 'SYS', '2017-09-20 11:11:59', '0', 'SYS', '2017-09-20 11:11:59');
+INSERT INTO `txn_process_ctrl` VALUES ('QBAO', 'LIFE', 'I010', null, 'CRED', 'RINT', '消费利息交易控制', 'SYS', '2017-09-19 18:21:05', '0', 'SYS', '2017-09-19 18:21:05');
+INSERT INTO `txn_process_ctrl` VALUES ('QBAO', 'LIFE', 'I050', null, 'RINT', 'CRED', '消费利息冲正交易控制', 'SYS', '2017-09-19 18:42:46', '0', 'SYS', '2017-09-19 18:41:02');
+INSERT INTO `txn_process_ctrl` VALUES ('QBAO', 'LIFE', 'I051', null, 'RINT', 'CRED', '手工减免消费利息交易控制', 'SYS', '2017-09-19 18:42:41', '0', 'SYS', '2017-09-19 18:42:41');
+INSERT INTO `txn_process_ctrl` VALUES ('QBAO', 'LIFE', 'P010', null, 'DEBT', 'CRED', '还款交易控制', 'SYS', '2017-10-18 17:54:05', '0', 'SYS', '2017-09-20 11:13:50');
+INSERT INTO `txn_process_ctrl` VALUES ('QBAO', 'LIFE', 'P050', null, 'CRED', 'RETL', '还款冲正交易控制', 'SYS', '2017-09-20 11:15:19', '0', 'SYS', '2017-09-20 11:14:58');
+INSERT INTO `txn_process_ctrl` VALUES ('QBAO', 'LIFE', 'R010', 'F010', 'CRED', 'RETL', '消费（分期首付）交易控制', 'SYS', '2017-09-20 11:32:53', '0', 'SYS', '2017-09-20 11:24:22');
+INSERT INTO `txn_process_ctrl` VALUES ('QBAO', 'LIFE', 'R011', null, 'CRED', 'RETL', '消费（不分期）交易控制', 'SYS', '2017-10-16 19:07:41', '0', 'SYS', '2017-09-20 11:25:02');
+INSERT INTO `txn_process_ctrl` VALUES ('QBAO', 'LIFE', 'R050', 'F050', 'RETL', 'CRED', '消费冲正交易控制', 'SYS', '2017-09-20 11:33:03', '0', 'SYS', '2017-09-20 11:26:44');
+INSERT INTO `txn_process_ctrl` VALUES ('QBAO', 'LIFE', 'S010', null, 'CRED', 'RFEE', '服务费交易控制', 'SYS', '2017-09-20 11:27:42', '0', 'SYS', '2017-09-20 11:27:42');
+INSERT INTO `txn_process_ctrl` VALUES ('QBAO', 'LIFE', 'S050', null, 'RFEE', 'CRED', '服务费冲正交易控制', 'SYS', '2017-09-20 11:28:19', '0', 'SYS', '2017-09-20 11:28:19');
+INSERT INTO `txn_process_ctrl` VALUES ('QBAO', 'LIFE', 'S051', null, 'RFEE', 'CRED', '手工减免服务费交易控制', 'SYS', '2017-09-20 11:28:48', '0', 'SYS', '2017-09-20 11:28:48');
+INSERT INTO `txn_process_ctrl` VALUES ('QBAO', 'LIFE', 'X010', null, 'CRED', 'RETL', '溢缴款转移（内部账户转出）交易控制', 'SYS', '2017-09-20 11:30:51', '0', 'SYS', '2017-09-20 11:30:51');
+INSERT INTO `txn_process_ctrl` VALUES ('QBAO', 'LIFE', 'X011', null, 'DEBT', 'CRED', '溢缴款转移（内部账户转入）交易控制', 'SYS', '2017-10-18 17:54:06', '0', 'SYS', '2017-09-20 11:32:29');
+
+-- ----------------------------
+-- Table structure for `txn_profile`
 -- ----------------------------
 DROP TABLE IF EXISTS `txn_profile`;
 CREATE TABLE `txn_profile` (
@@ -467,7 +590,30 @@ CREATE TABLE `txn_profile` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='交易类型字典';
 
 -- ----------------------------
--- Table structure for txn_summary
+-- Records of txn_profile
+-- ----------------------------
+INSERT INTO `txn_profile` VALUES ('D010', 'FEE', 'DLQF', 'D', 'D050', 'N', '违约金', 'SYS', '2017-09-19 11:27:23', '0', 'SYS', '2017-07-20 14:06:49');
+INSERT INTO `txn_profile` VALUES ('D050', 'FEE', 'DLQF', 'C', null, 'N', '违约金冲正', 'SYS', '2017-09-19 11:26:56', '0', 'SYS', '2017-07-20 14:06:49');
+INSERT INTO `txn_profile` VALUES ('D051', 'FEE', 'DLQF', 'C', null, 'N', '手工减免违约金', 'SYS', '2017-09-19 11:26:58', '0', 'SYS', '2017-07-20 14:06:49');
+INSERT INTO `txn_profile` VALUES ('F010', 'FEE', 'TXNF', 'D', 'F050', 'N', '手续费', 'SYS', '2017-09-20 11:09:54', '0', 'SYS', '2017-07-20 14:06:49');
+INSERT INTO `txn_profile` VALUES ('F050', 'FEE', 'TXNF', 'C', null, 'N', '手续费冲正', 'SYS', '2017-09-20 11:09:55', '0', 'SYS', '2017-07-20 14:06:49');
+INSERT INTO `txn_profile` VALUES ('F051', 'FEE', 'TXNF', 'C', null, 'N', '手工减免手续费', 'SYS', '2017-09-20 11:09:56', '0', 'SYS', '2017-07-20 14:06:49');
+INSERT INTO `txn_profile` VALUES ('I010', 'INT', 'RINT', 'D', 'I050', 'N', '利息', 'SYS', '2017-09-19 11:27:30', '0', 'SYS', '2017-07-20 14:06:49');
+INSERT INTO `txn_profile` VALUES ('I050', 'INT', 'RINT', 'C', null, 'N', '利息冲正', 'SYS', '2017-09-19 11:27:10', '0', 'SYS', '2017-07-20 14:06:49');
+INSERT INTO `txn_profile` VALUES ('I051', 'INT', 'RINT', 'C', null, 'N', '手工减免利息', 'SYS', '2017-09-19 11:27:12', '0', 'SYS', '2017-07-20 14:06:49');
+INSERT INTO `txn_profile` VALUES ('P010', 'PYMT', 'PYMT', 'C', 'P050', 'Y', '还款', 'SYS', '2017-09-27 18:29:19', '0', 'SYS', '2017-07-20 18:06:20');
+INSERT INTO `txn_profile` VALUES ('P050', 'PYMT', 'PYMT', 'D', null, 'N', '还款冲正', 'SYS', '2017-09-19 11:27:15', '0', 'SYS', '2017-07-20 18:06:57');
+INSERT INTO `txn_profile` VALUES ('R010', 'RETL', 'RETL', 'D', 'R050', 'Y', '消费（分期首付）', 'SYS', '2017-09-27 18:29:13', '0', 'SYS', '2017-07-20 14:06:49');
+INSERT INTO `txn_profile` VALUES ('R011', 'RETL', 'RETL', 'D', 'R050', 'Y', '消费（非首期或不分期）', 'SYS', '2017-09-27 18:29:16', '0', 'SYS', '2017-07-20 14:06:49');
+INSERT INTO `txn_profile` VALUES ('R050', 'RETL', 'RETL', 'C', null, 'N', '消费退款', 'SYS', '2017-09-20 15:01:33', '0', 'SYS', '2017-07-20 14:06:49');
+INSERT INTO `txn_profile` VALUES ('S010', 'FEE', 'SFEE', 'D', 'S050', 'N', '服务费', 'SYS', '2017-09-19 11:27:28', '0', 'SYS', '2017-07-20 14:06:49');
+INSERT INTO `txn_profile` VALUES ('S050', 'FEE', 'SFEE', 'C', null, 'N', '服务费冲正', 'SYS', '2017-09-19 11:27:06', '0', 'SYS', '2017-07-20 14:06:49');
+INSERT INTO `txn_profile` VALUES ('S051', 'FEE', 'SFEE', 'C', null, 'N', '手工减免服务费', 'SYS', '2017-09-19 11:27:08', '0', 'SYS', '2017-07-20 14:06:49');
+INSERT INTO `txn_profile` VALUES ('X010', 'CRED', 'XFR', 'D', null, 'N', '溢缴款转移（内部账户转出）', 'SYS', '2017-09-19 14:05:45', '0', 'SYS', '2017-09-19 14:05:53');
+INSERT INTO `txn_profile` VALUES ('X011', 'CRED', 'XFR', 'C', null, 'N', '溢缴款转移（内部账户转入）', 'SYS', '2017-09-19 14:07:56', '0', 'SYS', '2017-09-19 14:07:49');
+
+-- ----------------------------
+-- Table structure for `txn_summary`
 -- ----------------------------
 DROP TABLE IF EXISTS `txn_summary`;
 CREATE TABLE `txn_summary` (
@@ -506,4 +652,13 @@ CREATE TABLE `txn_summary` (
   PRIMARY KEY (`ACCOUNT_ID`,`CYCLE_NO`,`TXN_SUMMARY_NO`),
   UNIQUE KEY `UX_TXN_ID` (`TXN_ID`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-SET FOREIGN_KEY_CHECKS=1;
+
+-- ----------------------------
+-- Records of txn_summary
+-- ----------------------------
+INSERT INTO `txn_summary` VALUES ('5949547112563712', '1', '21', '6585647725806592', '5949547112301568', '6585647705883648', '6585647725806592', 'QBAO', 'LIFE', '0', '1', 'R010', 'RETL', '4008001000000001', '4008001000000001', 'CNY', 'D', '16.70', '16.70', '83.30', '7.00', '0.00', 'Y', '20171018', '182412', 'McDonald', null, 'SYS', '2017-10-18 18:24:18', 'SYS', '2017-10-18 18:24:18', '0');
+INSERT INTO `txn_summary` VALUES ('5949547112563712', '1', '22', '6585647727379456', '5949547112301568', '6585647705883648', '6585647725806592', 'QBAO', 'LIFE', '21', '1', 'F010', 'FEE', null, null, 'CNY', 'D', '7.00', '7.00', '0.00', '0.00', '0.00', 'N', '20171018', '182412', null, null, 'SYS', '2017-10-18 18:24:18', 'SYS', '2017-10-18 18:24:18', '0');
+INSERT INTO `txn_summary` VALUES ('5949547112563712', '1', '23', '6585665067156481', '5949547112301568', '6585665067156480', '6585665067156481', 'QBAO', 'LIFE', '0', '1', 'R010', 'RETL', '4008001000000001', '4008001000000001', 'CNY', 'D', '16.70', '16.70', '83.30', '7.00', '0.00', 'Y', '20171018', '182518', 'McDonald', null, 'SYS', '2017-10-18 18:25:22', 'SYS', '2017-10-18 18:25:22', '0');
+INSERT INTO `txn_summary` VALUES ('5949547112563712', '1', '24', '6585665067156482', '5949547112301568', '6585665067156480', '6585665067156481', 'QBAO', 'LIFE', '23', '1', 'F010', 'FEE', null, null, 'CNY', 'D', '7.00', '7.00', '0.00', '0.00', '0.00', 'N', '20171018', '182518', null, null, 'SYS', '2017-10-18 18:25:22', 'SYS', '2017-10-18 18:25:22', '0');
+INSERT INTO `txn_summary` VALUES ('6714457495438340', '1', '1', '6721010264179712', '6714457495438339', '6721010261033984', '6721010264179712', 'QBAO', 'LIFE', '0', '1', 'R010', 'RETL', '4008001000000001', '4008001000000001', 'CNY', 'D', '16.70', '16.70', '83.30', '9.00', '0.00', 'Y', '20171024', '175019', 'McDonald', null, 'SYS', '2017-10-24 17:50:20', 'SYS', '2017-10-24 17:50:20', '0');
+INSERT INTO `txn_summary` VALUES ('6714457495438340', '1', '2', '6721010264704000', '6714457495438339', '6721010261033984', '6721010264179712', 'QBAO', 'LIFE', '1', '1', 'F010', 'FEE', null, null, 'CNY', 'D', '9.00', '9.00', '0.00', '0.00', '0.00', 'N', '20171024', '175019', null, null, 'SYS', '2017-10-24 17:50:20', 'SYS', '2017-10-24 17:50:20', '0');
