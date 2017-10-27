@@ -84,8 +84,12 @@ public class ActCreditHistoryId implements Serializable {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         ActCreditHistoryId that = (ActCreditHistoryId) o;
         return Objects.equals(accountId, that.accountId) &&
                 Objects.equals(ccdId, that.ccdId) &&

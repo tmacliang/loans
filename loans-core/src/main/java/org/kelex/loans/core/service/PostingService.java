@@ -1,7 +1,9 @@
 package org.kelex.loans.core.service;
 
+import org.kelex.loans.bean.PaymentOrderRequest;
 import org.kelex.loans.core.SysintrException;
 import org.kelex.loans.core.context.TransactionContext;
+import org.kelex.loans.core.dto.RequestDTO;
 import org.kelex.loans.core.entity.*;
 import org.kelex.loans.core.repository.*;
 import org.kelex.loans.core.util.TransactionUtils;
@@ -9,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -224,13 +227,30 @@ public class PostingService {
         context.setAttribute(AccountEntity.class, actCreditData);
     }
 
-    public void updateCycleSummary(TxnSummaryEntity txnSummary, TransactionContext context){
-        CycleSummaryEntity cycleSummary = (CycleSummaryEntity)context.getAttribute(CycleSummaryEntity.class);
+    public void updateCycleSummary(TxnSummaryEntity txnSummary, TransactionContext context) {
+        CycleSummaryEntity cycleSummary = (CycleSummaryEntity) context.getAttribute(CycleSummaryEntity.class);
+        AccountEntity account = (AccountEntity) context.getAttribute(AccountEntity.class);
         TxnProfileEntity txnProfile = (TxnProfileEntity) context.getAttribute(TxnProfileEntity.class);
-        if(Objects.equals(txnProfile.getFlowType(), "D")){
-            //ToDO 判断是否在宽限期
 
-        }else{
+        LocalDate now = txnSummary.getTxnDate();
+        LocalDate dueDate = cycleSummary.getOpenDueDate();
+        BigDecimal postingAmt = txnSummary.getPostingAmt();
+
+        if (Objects.equals(txnProfile.getFlowType(), "D")) {
+            //宽限期：信用卡最后还款日之后的几天，bhh出账单到最后还款日中间记在graceAmt上
+            if (dueDate != null && !now.isAfter(dueDate)) {
+                cycleSummary.setTotalGraceDebitAmt(cycleSummary.getTotalGraceDebitAmt().add(postingAmt));
+            }
+            cycleSummary.setTotalDebitAmt(cycleSummary.getTotalDebitAmt().add(postingAmt));
+            cycleSummary.setCloseBalance(cycleSummary.getCloseBalance().add(postingAmt));
+            cycleSummary.setTotalCycleAmt(cycleSummary.getTotalCycleAmt().add(postingAmt));
+        } else {
+            if (dueDate != null && !now.isAfter(dueDate)) {
+                cycleSummary.setTotalGraceCreditAmt(cycleSummary.getTotalGraceCreditAmt().add(postingAmt));
+            }
+            cycleSummary.setTotalCreditAmt(cycleSummary.getTotalCreditAmt().add(postingAmt));
+            cycleSummary.setCloseBalance(cycleSummary.getCloseBalance().subtract(postingAmt));
+            cycleSummary.setTotalCycleAmt(cycleSummary.getTotalCycleAmt().subtract(postingAmt));
             //TODO 如果逾期需要增加判断并修改账户状态值
 
         }
