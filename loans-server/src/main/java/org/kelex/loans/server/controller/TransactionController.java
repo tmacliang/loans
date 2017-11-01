@@ -1,13 +1,7 @@
 package org.kelex.loans.server.controller;
 
-import org.kelex.loans.bean.ChangeLimitDTO;
-import org.kelex.loans.bean.PaymentOrderDTO;
-import org.kelex.loans.bean.PrePaymentDTO;
-import org.kelex.loans.bean.RetailDTO;
-import org.kelex.loans.core.service.ChangeLimitService;
-import org.kelex.loans.core.service.PaymentOrderService;
-import org.kelex.loans.core.service.PrePaymentService;
-import org.kelex.loans.core.service.RetailService;
+import org.kelex.loans.bean.*;
+import org.kelex.loans.core.service.*;
 import org.kelex.loans.web.AbstractController;
 import org.kelex.loans.web.HttpRequestDTO;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -36,6 +30,9 @@ public class TransactionController extends AbstractController {
     @Inject
     private ChangeLimitService changeLimitService;
 
+    @Inject
+    private RiskControlService riskControlService;
+
     @PostMapping("retail")
     public void retail(@RequestBody HttpRequestDTO<RetailDTO> requestDTO) throws Exception {
         retailService.process(requestDTO.getContext());
@@ -54,6 +51,11 @@ public class TransactionController extends AbstractController {
     @PostMapping("changeLimit")
     public void changeLimit(@RequestBody HttpRequestDTO<ChangeLimitDTO> requestDTO) throws Exception{
         changeLimitService.process(requestDTO.getContext());
+    }
+
+    @PostMapping("riskControl")
+    public void riskControl(@RequestBody HttpRequestDTO<RiskControlDTO> requestDTO) throws Exception{
+        riskControlService.process(requestDTO.getContext());
     }
 
 }
