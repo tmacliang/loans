@@ -44,7 +44,7 @@ public class RetailService extends TransactionService<RetailRequest> {
     private PostingService postingService;
 
     @Inject
-    private CreditLimitService creditLimitService;
+    private ChangeLimitService changeLimitService;
 
     @Inject
     private IouReceiptRepository iouReceiptRepository;
@@ -77,15 +77,15 @@ public class RetailService extends TransactionService<RetailRequest> {
         context.setAttribute(ActCreditDataEntity.class, actCreditDataEntity);
 
         //计算可用余额
-        BigDecimal availableBalance = creditLimitService.calAvailableBalance(accountId, context);
-        if(data.getRetailAmount().compareTo(availableBalance) > 0){
-            throw new ServerRuntimeException(500,"availableBalance is less than retailAmount");
+        BigDecimal availableBalance = changeLimitService.calAvailableBalance(context);
+        if (data.getRetailAmount().compareTo(availableBalance) > 0) {
+            throw new ServerRuntimeException(500, "availableBalance is less than retailAmount");
         }
 
         //判断幂等性
         Optional<IouReceiptEntity> iouReceiptEntityOpt = iouReceiptRepository.findOneByOrderNo(data.getRetailOrderNo());
-        if(iouReceiptEntityOpt.isPresent()){
-            throw new ServerRuntimeException(500,"duplicate Exception");
+        if (iouReceiptEntityOpt.isPresent()) {
+            throw new ServerRuntimeException(500, "duplicate Exception");
         }
 
         //检查并得到账户实体

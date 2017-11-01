@@ -2,20 +2,18 @@ package org.kelex.loans.core.service;
 
 import org.kelex.loans.ArgumentMessageEnum;
 import org.kelex.loans.bean.ChangeLimitRequest;
-import org.kelex.loans.bean.PrePaymentRequest;
 import org.kelex.loans.core.ServerRuntimeException;
 import org.kelex.loans.core.context.TransactionRequestContext;
 import org.kelex.loans.core.dto.RequestDTO;
-import org.kelex.loans.core.entity.AccountEntity;
 import org.kelex.loans.core.entity.ActCreditDataEntity;
 import org.kelex.loans.core.entity.ActCreditHistoryEntity;
 import org.kelex.loans.core.entity.ActCreditHistoryId;
 import org.kelex.loans.core.repository.RepositoryProxy;
 import org.kelex.loans.core.util.AssertUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Inject;
-
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
@@ -25,13 +23,11 @@ import static java.math.BigDecimal.ZERO;
  * Created by licl1 on 2017/11/1.
  */
 @Service
+@Transactional
 public class ChangeLimitService extends TransactionService<ChangeLimitRequest> {
 
     @Inject
     private EntryService entryService;
-
-    @Inject
-    private CreditLimitService creditLimitService;
 
     @Override
     protected void checkArguments(TransactionRequestContext<? extends ChangeLimitRequest> context) throws Exception {
@@ -103,11 +99,11 @@ public class ChangeLimitService extends TransactionService<ChangeLimitRequest> {
         ChangeLimitRequest data = request.getData();
 
         ActCreditDataEntity actCreditData = (ActCreditDataEntity) context.getAttribute(ActCreditDataEntity.class);
-
         ActCreditHistoryId id = new ActCreditHistoryId();
         id.setAccountId(data.getAccountId());
         id.setCcdId("CC01");
         ActCreditHistoryEntity actCreditHistory = new ActCreditHistoryEntity();
+        actCreditHistory.setId(id);
         actCreditHistory.setCreditLimitBefore(actCreditData.getCreditLimit());
         actCreditHistory.setAvailableBalanceBefore(calAvailableBalance(context));
         actCreditHistory.setCreditLimitAfter(data.getCreditLimit());
