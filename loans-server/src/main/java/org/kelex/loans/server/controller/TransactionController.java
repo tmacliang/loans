@@ -1,8 +1,10 @@
 package org.kelex.loans.server.controller;
 
+import org.kelex.loans.bean.ChangeLimitDTO;
 import org.kelex.loans.bean.PaymentOrderDTO;
 import org.kelex.loans.bean.PrePaymentDTO;
 import org.kelex.loans.bean.RetailDTO;
+import org.kelex.loans.core.service.ChangeLimitService;
 import org.kelex.loans.core.service.PaymentOrderService;
 import org.kelex.loans.core.service.PrePaymentService;
 import org.kelex.loans.core.service.RetailService;
@@ -31,6 +33,9 @@ public class TransactionController extends AbstractController {
     @Inject
     private PrePaymentService prePaymentService;
 
+    @Inject
+    private ChangeLimitService changeLimitService;
+
     @PostMapping("retail")
     public void retail(@RequestBody HttpRequestDTO<RetailDTO> requestDTO) throws Exception {
         retailService.process(requestDTO.getContext());
@@ -44,6 +49,11 @@ public class TransactionController extends AbstractController {
     @PostMapping("prePayment")
     public void prePayment(@RequestBody HttpRequestDTO<PrePaymentDTO> requestDTO) throws Exception {
         prePaymentService.process(requestDTO.getContext());
+    }
+
+    @PostMapping("changeLimit")
+    public void changeLimit(@RequestBody HttpRequestDTO<ChangeLimitDTO> requestDTO) throws Exception{
+        changeLimitService.process(requestDTO.getContext());
     }
 
 }
