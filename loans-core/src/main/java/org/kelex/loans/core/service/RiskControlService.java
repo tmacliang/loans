@@ -45,32 +45,38 @@ public class RiskControlService extends TransactionService<RiskControlRequest> {
 
         String manuStatusCode = accountEntity.getManuStatusCode();
         if(Objects.equal(manuStatusCode, "CLOSE")){
-            throw new ServerRuntimeException(500, "account is closed");
+            throw new ServerRuntimeException(500, "account status is closed");
         }
 
+        /***
+         *   优化级：CLOSE>LOCK>STOP
+             关户CLOSE操作不可逆
+             冻结LOCK不可以还款也不可以交易
+             止付STOP下可以还款不可以交易
+         */
         String actionCode = data.getActionCode();
         switch(actionCode){
+            case "NORM":
+                accountEntity.setManuStatusCode("NORM");
+                break;
             case "CLOSE":
                 accountEntity.setManuStatusCode("CLOSE");
+                break;
+            case "STOP":
+                if(Objects.equal(manuStatusCode, "LOCK") || Objects.equal(manuStatusCode, "STOP") ){
+                    throw new ServerRuntimeException(500, "account status is" + manuStatusCode);
+                }
+                accountEntity.setManuStatusCode("STOP");
+                break;
+            case "LOCK":
+                if(Objects.equal(manuStatusCode, "LOCK")){
+                    throw new ServerRuntimeException(500, "account status is lock");
+                }
+                accountEntity.setManuStatusCode("LOCK");
                 break;
             default:
                 break;
         }
-
-
-
-        /***
-         * 、 状态为close则不能进行更改状态;
-         状态不等于CLOSE、LOCK时都可以改为LOCK
-         状态不等于CLOSE、LOCK、STOP时,可以改为STOP
-         状态不等于CLOSE时，可以改为NORM
-         默认情况状态不等于CLOSE、LOCK、STOP可以改为其它状态。
-
-         优化级：CLOSE>LOCK>STOP
-         关户CLOSE操作不可逆
-         冻结LOCK不可以还款也不可以交易
-         止付STOP下可以还款不可以交易
-         */
 
     }
 }
