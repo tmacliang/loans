@@ -33,6 +33,9 @@ public class TransactionController extends AbstractController {
     @Inject
     private RiskControlService riskControlService;
 
+    @Inject
+    private RefundService refundService;
+
     @PostMapping("retail")
     public void retail(@RequestBody HttpRequestDTO<RetailDTO> requestDTO) throws Exception {
         retailService.process(requestDTO.getContext());
@@ -56,6 +59,11 @@ public class TransactionController extends AbstractController {
     @PostMapping("riskControl")
     public void riskControl(@RequestBody HttpRequestDTO<RiskControlDTO> requestDTO) throws Exception{
         riskControlService.process(requestDTO.getContext());
+    }
+
+    @PostMapping("refund")
+    public void refund(@RequestBody HttpRequestDTO<RefundRequest> requestDTO) throws Exception{
+        refundService.process(requestDTO.getContext());
     }
 
 }

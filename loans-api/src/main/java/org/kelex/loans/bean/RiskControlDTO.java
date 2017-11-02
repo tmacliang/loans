@@ -5,7 +5,7 @@ import java.io.Serializable;
 /**
  * Created by licl1 on 2017/11/1.
  */
-public class RiskControlDTO  implements  RiskControlRequest, Serializable{
+public class RiskControlDTO implements RiskControlRequest, Serializable {
 
     private static final long serialVersionUID = 7516844298638136494L;
     private Long accountId;
