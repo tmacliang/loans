@@ -4,6 +4,7 @@ import org.kelex.loans.core.enumeration.FeeRateType;
 import org.kelex.loans.enumeration.CurrencyCodeEnum;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -128,6 +129,28 @@ public class IouReceiptEntity extends DescriptionEntity implements Serializable{
 
     @Column(name = "LAST_TERM_FEE_AMT", nullable = false, scale = 2)
     private BigDecimal lastTermFeeAmt;
+
+    @Column(name = "total_reversal_fee_amt", precision=17, scale=2, nullable = false)
+    private BigDecimal totalReversalFeeAmt;
+
+    @Column(name = "total_fee_amt", precision=17, scale=2, nullable = false)
+    private BigDecimal totalFeeAmt;
+
+    public BigDecimal getTotalReversalFeeAmt() {
+        return totalReversalFeeAmt;
+    }
+
+    public void setTotalReversalFeeAmt(BigDecimal totalReversalFeeAmt) {
+        this.totalReversalFeeAmt = totalReversalFeeAmt;
+    }
+
+    public BigDecimal getTotalFeeAmt() {
+        return totalFeeAmt;
+    }
+
+    public void setTotalFeeAmt(BigDecimal totalFeeAmt) {
+        this.totalFeeAmt = totalFeeAmt;
+    }
 
     /**
      * 得到借据ID
@@ -737,47 +760,50 @@ public class IouReceiptEntity extends DescriptionEntity implements Serializable{
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("IouReceiptEntity{")
-                .append("accountId = ").append(accountId)
-                .append(",commodityCode = '").append(commodityCode).append('\'')
-                .append(",currencyCode = ").append(currencyCodeEnum)
-                .append(",currentBalance = ").append(currentBalance)
-                .append(",currentTermNo = ").append(currentTermNo)
-                .append(",cycleNo = ").append(cycleNo)
-                .append(",feeRate = ").append(feeRate)
-                .append(",feeRateType = ").append(feeRateType)
-                .append(",firstTerm = ").append(isFirstTerm())
-                .append(",firstTermAmt = ").append(firstTermAmt)
-                .append(",firstTermFeeAmt = ").append(firstTermFeeAmt)
-                .append(",fixedTerm = ").append(isFixedTerm())
-                .append(",fixedTermAmt = ").append(fixedTermAmt)
-                .append(",fixedTermFeeAmt = ").append(fixedTermFeeAmt)
-                .append(",iouAmt = ").append(iouAmt)
-                .append(",iouId = ").append(iouId)
-                .append(",iouTerms = ").append(iouTerms)
-                .append(",lastPaymentDate = ").append(lastPaymentDate)
-                .append(",lastReversalDate = ").append(lastReversalDate)
-                .append(",lastTerm = ").append(isLastTerm())
-                .append(",lastTermAmt = ").append(lastTermAmt)
-                .append(",lastTermFeeAmt = ").append(lastTermFeeAmt)
-                .append(",merchantName = '").append(merchantName).append('\'')
-                .append(",orderNo = '").append(orderNo).append('\'')
-                .append(",originalIouAmt = ").append(originalIouAmt)
-                .append(",originalIouTerms = ").append(originalIouTerms)
-                .append(",outstandingTerms = ").append(outstandingTerms)
-                .append(",outstandingTxnAmt = ").append(outstandingTxnAmt)
-                .append(",planId = '").append(planId).append('\'')
-                .append(",postingFeeAmt = ").append(postingFeeAmt)
-                .append(",pvsStatusCode = '").append(pvsStatusCode).append('\'')
-                .append(",statusCode = '").append(statusCode).append('\'')
-                .append(",totalPaymentAmt = ").append(totalPaymentAmt)
-                .append(",totalPayments = ").append(totalPayments)
-                .append(",totalReversal = ").append(totalReversal)
-                .append(",totalReversalAmt = ").append(totalReversalAmt)
-                .append(",txnDate = ").append(txnDate)
-                .append(",txnTime = ").append(txnTime)
-                .append(",txnUuid = '").append(txnUuid).append('\'')
-                .append("}, ").append(super.toString()).append('}');
+        final StringBuffer sb = new StringBuffer("IouReceiptEntity{");
+        sb.append("iouId=").append(iouId);
+        sb.append(", planId='").append(planId).append('\'');
+        sb.append(", accountId=").append(accountId);
+        sb.append(", cycleNo=").append(cycleNo);
+        sb.append(", commodityCode='").append(commodityCode).append('\'');
+        sb.append(", merchantName='").append(merchantName).append('\'');
+        sb.append(", statusCode='").append(statusCode).append('\'');
+        sb.append(", pvsStatusCode='").append(pvsStatusCode).append('\'');
+        sb.append(", originalIouAmt=").append(originalIouAmt);
+        sb.append(", originalIouTerms=").append(originalIouTerms);
+        sb.append(", iouAmt=").append(iouAmt);
+        sb.append(", iouTerms=").append(iouTerms);
+        sb.append(", currencyCodeEnum=").append(currencyCodeEnum);
+        sb.append(", txnUuid='").append(txnUuid).append('\'');
+        sb.append(", orderNo='").append(orderNo).append('\'');
+        sb.append(", txnDate=").append(txnDate);
+        sb.append(", txnTime=").append(txnTime);
+        sb.append(", currentTermNo=").append(currentTermNo);
+        sb.append(", postingFeeAmt=").append(postingFeeAmt);
+        sb.append(", currentBalance=").append(currentBalance);
+        sb.append(", outstandingTxnAmt=").append(outstandingTxnAmt);
+        sb.append(", outstandingTerms=").append(outstandingTerms);
+        sb.append(", firstTermAmt=").append(firstTermAmt);
+        sb.append(", fixedTermAmt=").append(fixedTermAmt);
+        sb.append(", lastTermAmt=").append(lastTermAmt);
+        sb.append(", totalPayments=").append(totalPayments);
+        sb.append(", totalPaymentAmt=").append(totalPaymentAmt);
+        sb.append(", lastPaymentDate=").append(lastPaymentDate);
+        sb.append(", totalReversal=").append(totalReversal);
+        sb.append(", totalReversalAmt=").append(totalReversalAmt);
+        sb.append(", lastReversalDate=").append(lastReversalDate);
+        sb.append(", feeRate=").append(feeRate);
+        sb.append(", feeRateType=").append(feeRateType);
+        sb.append(", firstTermFeeAmt=").append(firstTermFeeAmt);
+        sb.append(", fixedTermFeeAmt=").append(fixedTermFeeAmt);
+        sb.append(", lastTermFeeAmt=").append(lastTermFeeAmt);
+        sb.append(", totalReversalFeeAmt=").append(totalReversalFeeAmt);
+        sb.append(", totalFeeAmt=").append(totalFeeAmt);
+        sb.append(", imaryKey=").append(primaryKey());
+        sb.append(", firstTerm=").append(isFirstTerm());
+        sb.append(", lastTerm=").append(isLastTerm());
+        sb.append(", fixedTerm=").append(isFixedTerm());
+        sb.append('}');
         return sb.toString();
     }
 }
