@@ -9,12 +9,14 @@ import org.kelex.loans.core.dto.RequestDTO;
 import org.kelex.loans.core.entity.AccountEntity;
 import org.kelex.loans.core.repository.AccountRepository;
 import org.kelex.loans.core.util.AssertUtils;
+import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
 
 /**
  * Created by licl1 on 2017/11/1.
  */
+@Service
 public class RiskControlService extends TransactionService<RiskControlRequest> {
 
     @Inject
@@ -41,21 +43,21 @@ public class RiskControlService extends TransactionService<RiskControlRequest> {
     protected void doTransaction(TransactionRequestContext<? extends RiskControlRequest> context) throws Exception {
         RequestDTO<? extends RiskControlRequest> request = context.getRequest();
         RiskControlRequest data = request.getData();
-        AccountEntity accountEntity = (AccountEntity)context.getAttribute(AccountEntity.class);
+        AccountEntity accountEntity = (AccountEntity) context.getAttribute(AccountEntity.class);
 
         String manuStatusCode = accountEntity.getManuStatusCode();
-        if(Objects.equal(manuStatusCode, "CLOSE")){
+        if (Objects.equal(manuStatusCode, "CLOSE")) {
             throw new ServerRuntimeException(500, "account status is closed");
         }
 
         /***
          *   优化级：CLOSE>LOCK>STOP
-             关户CLOSE操作不可逆
-             冻结LOCK不可以还款也不可以交易
-             止付STOP下可以还款不可以交易
+         关户CLOSE操作不可逆
+         冻结LOCK不可以还款也不可以交易
+         止付STOP下可以还款不可以交易
          */
         String actionCode = data.getActionCode();
-        switch(actionCode){
+        switch (actionCode) {
             case "NORM":
                 accountEntity.setManuStatusCode("NORM");
                 break;
@@ -63,13 +65,13 @@ public class RiskControlService extends TransactionService<RiskControlRequest> {
                 accountEntity.setManuStatusCode("CLOSE");
                 break;
             case "STOP":
-                if(Objects.equal(manuStatusCode, "LOCK") || Objects.equal(manuStatusCode, "STOP") ){
+                if (Objects.equal(manuStatusCode, "LOCK") || Objects.equal(manuStatusCode, "STOP")) {
                     throw new ServerRuntimeException(500, "account status is" + manuStatusCode);
                 }
                 accountEntity.setManuStatusCode("STOP");
                 break;
             case "LOCK":
-                if(Objects.equal(manuStatusCode, "LOCK")){
+                if (Objects.equal(manuStatusCode, "LOCK")) {
                     throw new ServerRuntimeException(500, "account status is lock");
                 }
                 accountEntity.setManuStatusCode("LOCK");

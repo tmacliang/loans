@@ -13,8 +13,10 @@ public class TransactionRequestContext<T> extends TransactionContext {
     public TransactionRequestContext(RequestDTO<T> request) {
         this.request = request;
     }
+
     /**
      * 得到请求对象
+     *
      * @return
      */
     public RequestDTO<T> getRequest() {

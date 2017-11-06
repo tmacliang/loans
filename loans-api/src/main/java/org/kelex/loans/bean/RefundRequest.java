@@ -1,5 +1,7 @@
 package org.kelex.loans.bean;
 
+import org.kelex.loans.enumeration.CurrencyCodeEnum;
+
 import java.math.BigDecimal;
 
 /**
@@ -13,6 +15,6 @@ public interface RefundRequest {
 
     BigDecimal getRefundAmount();
 
-    String getCurrencyCode();
-    
+    CurrencyCodeEnum getCurrencyCode();
+
 }

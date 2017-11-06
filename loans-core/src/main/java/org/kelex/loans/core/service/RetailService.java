@@ -22,6 +22,8 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Optional;
 
+import static java.math.BigDecimal.ZERO;
+
 /**
  * Created by hechao on 2017/9/18.
  */
@@ -127,7 +129,6 @@ public class RetailService extends TransactionService<RetailRequest> {
     @Override
     protected void doTransaction(TransactionRequestContext<? extends RetailRequest> context) throws Exception {
         RequestDTO<? extends RetailRequest> request = context.getRequest();
-        RepositoryProxy repository = context.getRepository();
         LocalDate businessDate = request.getBusinessDate();
         RetailRequest data = request.getData();
 
@@ -157,8 +158,8 @@ public class RetailService extends TransactionService<RetailRequest> {
         iou.setStatusCode(planProfile.getInitStatusCode());
         iou.setCurrencyCodeEnum(account.getCurrencyCode());
 
-        iou.setPostingFeeAmt(BigDecimal.ZERO);
-        iou.setCurrentBalance(BigDecimal.ZERO);
+        iou.setPostingFeeAmt(ZERO);
+        iou.setCurrentBalance(ZERO);
         iou.setIouAmt(retailAmount);
         iou.setIouTerms(planProfile.getPlanTerms());
         iou.setOriginalIouAmt(retailAmount);
@@ -176,14 +177,15 @@ public class RetailService extends TransactionService<RetailRequest> {
         iou.setLastTermFeeAmt(sample.getLastTermFeeAmt());
 
         iou.setTotalPayments(0);
-        iou.setTotalPaymentAmt(BigDecimal.ZERO);
+        iou.setTotalPaymentAmt(ZERO);
         iou.setTotalReversal(0);
-        iou.setTotalReversalAmt(BigDecimal.ZERO);
+        iou.setTotalReversalAmt(ZERO);
         iou.setCommodityCode(data.getCommodityCode());
         iou.setMerchantName(data.getMerchantName());
+        iou.setTotalFeeAmt(ZERO);
+        iou.setTotalReversalFeeAmt(ZERO);
 
         cycleService.next(account, cycle, iou, businessDate, context);
-
         postingService.postTransactions(context);
     }
 }

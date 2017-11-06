@@ -1,5 +1,7 @@
 package org.kelex.loans.bean;
 
+import org.kelex.loans.enumeration.CurrencyCodeEnum;
+
 import java.io.Serializable;
 import java.math.BigDecimal;
 
@@ -15,7 +17,7 @@ public class RefundDTO implements RefundRequest, Serializable {
 
     private BigDecimal refundAmount;
 
-    private String currencyCode;
+    private CurrencyCodeEnum currencyCode;
 
     public void setIouId(Long iouId) {
         this.iouId = iouId;
@@ -29,28 +31,28 @@ public class RefundDTO implements RefundRequest, Serializable {
         this.refundAmount = refundAmount;
     }
 
-    public void setCurrencyCode(String currencyCode) {
+    public void setCurrencyCode(CurrencyCodeEnum currencyCode) {
         this.currencyCode = currencyCode;
     }
 
     @Override
     public Long getIouId() {
-        return null;
+        return this.iouId;
     }
 
     @Override
     public String getRefundOrderNo() {
-        return null;
+        return this.refundOrderNo;
     }
 
     @Override
     public BigDecimal getRefundAmount() {
-        return null;
+        return this.refundAmount;
     }
 
     @Override
-    public String getCurrencyCode() {
-        return null;
+    public CurrencyCodeEnum getCurrencyCode() {
+        return this.currencyCode;
     }
 
     @Override

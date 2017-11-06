@@ -52,17 +52,17 @@ public class TransactionController extends AbstractController {
     }
 
     @PostMapping("changeLimit")
-    public void changeLimit(@RequestBody HttpRequestDTO<ChangeLimitDTO> requestDTO) throws Exception{
+    public void changeLimit(@RequestBody HttpRequestDTO<ChangeLimitDTO> requestDTO) throws Exception {
         changeLimitService.process(requestDTO.getContext());
     }
 
     @PostMapping("riskControl")
-    public void riskControl(@RequestBody HttpRequestDTO<RiskControlDTO> requestDTO) throws Exception{
+    public void riskControl(@RequestBody HttpRequestDTO<RiskControlDTO> requestDTO) throws Exception {
         riskControlService.process(requestDTO.getContext());
     }
 
     @PostMapping("refund")
-    public void refund(@RequestBody HttpRequestDTO<RefundRequest> requestDTO) throws Exception{
+    public void refund(@RequestBody HttpRequestDTO<RefundDTO> requestDTO) throws Exception {
         refundService.process(requestDTO.getContext());
     }
 
