@@ -9,10 +9,12 @@ import org.kelex.loans.core.dto.RequestDTO;
 import org.kelex.loans.core.entity.*;
 import org.kelex.loans.core.repository.*;
 import org.kelex.loans.core.util.AssertUtils;
+import org.kelex.loans.core.util.IdWorker;
 
 import javax.inject.Inject;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.time.LocalTime;
 import java.util.Optional;
 
 import static java.math.BigDecimal.ZERO;
@@ -175,16 +177,36 @@ public class RefundService extends TransactionService<RefundRequest> {
 
         TxnProfileEntity txnProfile = entryService.findOneTxnProfile(txnCode, repository);
         String reverseCode = txnProfile.getReversalTxnCode();
+        cycleSummary.setNextTxnSummaryNo(cycleSummary.getNextTxnSummaryNo() + 1);
+
+        IdWorker idWorker = context.getIdWorker();
 
         TxnSummaryId id = new TxnSummaryId();
+        id.setAccountId(account.getAccountId());
+        id.setTxnSummaryNo(account.getCurrentCycleNo());
+        id.setTxnSummaryNo(cycleSummary.getNextTxnSummaryNo());
 
+        TxnSummaryEntity refundTxn = new TxnSummaryEntity();
+        refundTxn.setId(id);
+        refundTxn.setCustomerId(account.getCustomerId());
+        refundTxn.setProductId(account.getProductId());
+        refundTxn.setGenTxnSummaryNo(0);
+        refundTxn.setIouId(iouReceipt.getIouId());
+        refundTxn.setTermNo(iouReceipt.getCurrentTermNo());
+        refundTxn.setTxnCode(reverseCode);
+        refundTxn.setTxnType(txnProfile.getTxnType());
+        refundTxn.setOrderNo(data.getRefundOrderNo());
+        refundTxn.setTxnUuid(data.getRefundOrderNo());
+        refundTxn.setTxnId(idWorker.nextId());
+        refundTxn.setCurrencyCode(account.getCurrencyCode());
+        refundTxn.setTxnAmt(iouReceipt.getIouAmt());//原始交易金额
+        refundTxn.setCustomerGenFlag(false);
+        refundTxn.setFlowType(txnProfile.getFlowType());
+        refundTxn.setTxnDate(request.getBusinessDate());
+        refundTxn.setTxnTime(LocalTime.now());
 
-
-
-
-
-        TxnSummaryEntity refundAmt = new TxnSummaryEntity();
-        return refundAmt;
+        repository.save(refundTxn);
+        return refundTxn;
     }
 
     /**
@@ -193,7 +215,50 @@ public class RefundService extends TransactionService<RefundRequest> {
      * @return
      */
     public TxnSummaryEntity createRefundFeeTxn(TransactionRequestContext<? extends RefundRequest> context){
-        TxnSummaryEntity refundFee = new TxnSummaryEntity();
-        return refundFee;
+        RequestDTO<? extends RefundRequest> request = context.getRequest();
+        RefundRequest data = request.getData();
+        RepositoryProxy repository = context.getRepository();
+        AccountEntity account = (AccountEntity)context.getAttribute(AccountEntity.class);
+        CycleSummaryEntity cycleSummary = (CycleSummaryEntity)context.getAttribute(CycleSummaryEntity.class);
+        IouReceiptEntity iouReceipt = (IouReceiptEntity)context.getAttribute(IouReceiptEntity.class);
+
+        PlanProcessCtrlEntity planProcessCtrl = entryService.findOnePlanProcessCtrl(account.getProductId(), account.getActTypeId(), iouReceipt.getPlanId());
+        String txnCode = planProcessCtrl.getFirstTxnCode();
+
+        TxnProcessCtrlEntity txnProcessCtrlEntity = entryService.findOneTxnProcessCtrl(account.getProductId(), account.getActTypeId(), txnCode, repository);
+        String feeCode = txnProcessCtrlEntity.getFeeCode();
+
+        TxnProfileEntity txnProfile = entryService.findOneTxnProfile(feeCode, repository);
+        String reverseCode = txnProfile.getReversalTxnCode();
+        cycleSummary.setNextTxnSummaryNo(cycleSummary.getNextTxnSummaryNo() + 1);
+
+        IdWorker idWorker = context.getIdWorker();
+
+        TxnSummaryId id = new TxnSummaryId();
+        id.setAccountId(account.getAccountId());
+        id.setTxnSummaryNo(account.getCurrentCycleNo());
+        id.setTxnSummaryNo(cycleSummary.getNextTxnSummaryNo() - 2);
+
+        TxnSummaryEntity refundFeeTxn = new TxnSummaryEntity();
+        refundFeeTxn.setId(id);
+        refundFeeTxn.setCustomerId(account.getCustomerId());
+        refundFeeTxn.setProductId(account.getProductId());
+        refundFeeTxn.setGenTxnSummaryNo(0);
+        refundFeeTxn.setIouId(iouReceipt.getIouId());
+        refundFeeTxn.setTermNo(iouReceipt.getCurrentTermNo());
+        refundFeeTxn.setTxnCode(reverseCode);
+        refundFeeTxn.setTxnType(txnProfile.getTxnType());
+        refundFeeTxn.setOrderNo(data.getRefundOrderNo());
+        refundFeeTxn.setTxnUuid(data.getRefundOrderNo());
+        refundFeeTxn.setTxnId(idWorker.nextId());
+        refundFeeTxn.setCurrencyCode(account.getCurrencyCode());
+        refundFeeTxn.setTxnAmt(iouReceipt.getIouAmt());//原始交易金额
+        refundFeeTxn.setCustomerGenFlag(false);
+        refundFeeTxn.setFlowType(txnProfile.getFlowType());
+        refundFeeTxn.setTxnDate(request.getBusinessDate());
+        refundFeeTxn.setTxnTime(LocalTime.now());
+
+        repository.save(refundFeeTxn);
+        return refundFeeTxn;
     }
 }
