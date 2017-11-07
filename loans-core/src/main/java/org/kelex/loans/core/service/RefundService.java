@@ -16,6 +16,7 @@ import javax.inject.Inject;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalTime;
+import java.util.List;
 import java.util.Optional;
 
 import static java.math.BigDecimal.ZERO;
@@ -43,6 +44,9 @@ public class RefundService extends TransactionService<RefundRequest> {
 
     @Inject
     private PostingService postingService;
+
+    @Inject
+    private InterestService interestService;
 
 
     @Override
@@ -160,13 +164,23 @@ public class RefundService extends TransactionService<RefundRequest> {
         RepositoryProxy repositoryProxy = context.getRepository();
         repositoryProxy.save(refundAmtTxn);
 
-        if(osgDeductFeeAmt.compareTo(ZERO) > 0){
+        if (osgDeductFeeAmt.compareTo(ZERO) > 0) {
             TxnSummaryEntity refundFeeTxn = createRefundFeeTxn(context);
             refundFeeTxn.setPostingAmt(postingFeeAmt);
             refundFeeTxn.setOutstandingDeductAmt(osgDeductFeeAmt);
             refundFeeTxn.setTxnAmt(refundFeeAmt);
             repositoryProxy.save(refundFeeTxn);
         }
+
+        //accrue interest
+        AccountEntity account = (AccountEntity) context.getAttribute(AccountEntity.class);
+        if (account.needAccrueInterest()) {
+            List<TxnSummaryEntity> interestTxnList = interestService.createInterestTxnList(
+                    account.getAccountId(), context);
+//            context.getTxnSummaries().addAll(interestTxnList);
+
+        }
+
         //update account cyclesummary bal and credit
         postingService.postTransactions(context);
     }

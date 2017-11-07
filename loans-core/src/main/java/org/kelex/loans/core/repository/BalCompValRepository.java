@@ -11,15 +11,6 @@ import java.util.List;
  * Created by hechao on 2017/10/17.
  */
 
-/**
- * @Author:
- * @Date:
- *
- */
-
-/**
- *
- */
 public interface BalCompValRepository extends JpaRepository<BalCompValEntity, BalCompValId> {
 
     @Query(value = "SELECT * FROM bal_comp_val WHERE account_id=?1 AND CYCLE_NO=?2",

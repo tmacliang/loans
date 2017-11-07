@@ -161,6 +161,10 @@ public class AccountEntity extends BaseEntity{
     @Transient
     private CycleSummaryId cycleId;
 
+    public boolean needAccrueInterest(){
+        return  "DLQ-".equals(autoStatusCode) || inDlqFlag;
+    }
+
     public Long getAccountId() {
         return accountId;
     }

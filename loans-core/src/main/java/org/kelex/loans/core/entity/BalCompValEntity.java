@@ -5,8 +5,10 @@ import org.kelex.loans.enumeration.CurrencyCodeEnum;
 
 import javax.persistence.*;
 import javax.persistence.EnumType;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 
 /**
  * Created by hechao on 2017/10/17.
@@ -45,6 +47,18 @@ public class BalCompValEntity extends BaseEntity implements Serializable{
     @Basic
     @Column(name = "OLD_BALANCE", nullable = false, precision = 2)
     private BigDecimal oldBalance;
+
+    @Basic
+    @Column(name = "PVS_INTEREST_VAL", nullable = false, precision = 2)
+    private BigDecimal pvsInterestVal;
+
+    @Basic
+    @Column(name = "OLD_INTEREST_VAL", nullable = false, precision = 2)
+    private BigDecimal oldInterestVal;
+
+    @NotNull
+    @Column(name = "accrued_through_date", nullable = false)
+    private LocalDate accruedThroughDate;
 
     /**
      * 得到余额成分ID
@@ -158,6 +172,30 @@ public class BalCompValEntity extends BaseEntity implements Serializable{
         this.oldBalance = oldBalance;
     }
 
+    public BigDecimal getPvsInterestVal() {
+        return pvsInterestVal;
+    }
+
+    public void setPvsInterestVal(BigDecimal pvsInterestVal) {
+        this.pvsInterestVal = pvsInterestVal;
+    }
+
+    public BigDecimal getOldInterestVal() {
+        return oldInterestVal;
+    }
+
+    public void setOldInterestVal(BigDecimal oldInterestVal) {
+        this.oldInterestVal = oldInterestVal;
+    }
+
+    public LocalDate getAccruedThroughDate() {
+        return accruedThroughDate;
+    }
+
+    public void setAccruedThroughDate(LocalDate accruedThroughDate) {
+        this.accruedThroughDate = accruedThroughDate;
+    }
+
     @Override
     public Object primaryKey() {
         return id;
@@ -173,6 +211,9 @@ public class BalCompValEntity extends BaseEntity implements Serializable{
                 .append(",id = ").append(id)
                 .append(",oldBalance = ").append(oldBalance)
                 .append(",pvsBalance = ").append(pvsBalance)
+                .append(",pvsInterestVal = ").append(pvsInterestVal)
+                .append(",oldInterestVal = ").append(oldInterestVal)
+                .append(",accruedThroughDate = ").append(accruedThroughDate)
                 .append("}, ").append(super.toString()).append('}');
         return sb.toString();
     }
