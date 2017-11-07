@@ -1,10 +1,13 @@
 package org.kelex.loans.core.service;
 
-import org.hibernate.validator.internal.constraintvalidators.bv.size.SizeValidatorForArraysOfLong;
 import org.kelex.loans.core.context.TransactionContext;
-import org.kelex.loans.core.entity.*;
+import org.kelex.loans.core.entity.AccountEntity;
+import org.kelex.loans.core.entity.BalCompValEntity;
+import org.kelex.loans.core.entity.BalProcessCtrlEntity;
+import org.kelex.loans.core.entity.TxnSummaryEntity;
 import org.kelex.loans.core.repository.AccountRepository;
 import org.kelex.loans.core.repository.BalCompValRepository;
+import org.kelex.loans.core.repository.CustomerRepository;
 import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
@@ -12,8 +15,8 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
 import static java.math.BigDecimal.ZERO;
 
@@ -32,24 +35,29 @@ public class InterestService {
     @Inject
     private BalCompValRepository balCompValRepository;
 
-
     public List<TxnSummaryEntity> createInterestTxnList(Long accountId, TransactionContext context) {
         AccountEntity account = accountRepository.findOne(accountId);
-
-        List<BalCompValEntity> balCompValList = findBalCompValList(account, context);
-
         context.setAttribute(AccountEntity.class, account);
-        return null;
+
+        List<BalCompValEntity> balCompValList = findBalCompValList(context);
+
+        List<TxnSummaryEntity> interestTxnList = accrueInterestTxn(balCompValList, context);
+        return interestTxnList;
     }
 
     /**
      * 查询当前账户的余额成分
      *
-     * @param account
      * @param context
      * @return
      */
-    public List<BalCompValEntity> findBalCompValList(AccountEntity account, TransactionContext context) {
+    public List<BalCompValEntity> findBalCompValList(TransactionContext context) {
+
+        if (!freeAccrueInterest(context)) {
+            return Collections.emptyList();
+        }
+
+        AccountEntity account = (AccountEntity) context.getAttribute(AccountEntity.class);
 
         List<BalCompValEntity> balCompValList = balCompValRepository.findAll(account.getAccountId(), account.getCurrentCycleNo());
 
@@ -88,25 +96,26 @@ public class InterestService {
 
     /**
      * 创建利息交易
+     *
      * @param balCompValList
      * @param context
      * @return
      */
-    public List<TxnSummaryEntity> accureInterestTxn(List<BalCompValEntity> balCompValList, TransactionContext context) {
+    public List<TxnSummaryEntity> accrueInterestTxn(List<BalCompValEntity> balCompValList, TransactionContext context) {
         List<TxnSummaryEntity> txnList = new ArrayList<>();
         BigDecimal totalInterests = ZERO;
-        for(BalCompValEntity bcv : balCompValList){
-            if(bcv.getOldInterestVal().compareTo(ZERO) > 0){
+        for (BalCompValEntity bcv : balCompValList) {
+            if (bcv.getOldInterestVal().compareTo(ZERO) > 0) {
                 totalInterests = totalInterests.add(bcv.getOldInterestVal());
                 bcv.setOldInterestVal(ZERO);
             }
 
-            if(bcv.getPvsInterestVal().compareTo(ZERO) > 0){
+            if (bcv.getPvsInterestVal().compareTo(ZERO) > 0) {
                 totalInterests = totalInterests.add(bcv.getPvsInterestVal());
                 bcv.setPvsInterestVal(ZERO);
             }
         }
-        if(totalInterests.compareTo(ZERO) > 0){
+        if (totalInterests.compareTo(ZERO) > 0) {
             TxnSummaryEntity txnSummary = createOneInterestTxn(context);
             txnList.add(txnSummary);
         }
@@ -114,18 +123,37 @@ public class InterestService {
         return txnList;
     }
 
-    public TxnSummaryEntity createOneInterestTxn(TransactionContext context){
+    public TxnSummaryEntity createOneInterestTxn(TransactionContext context) {
         TxnSummaryEntity txnSummary = new TxnSummaryEntity();
         return txnSummary;
     }
 
     /**
      * 判断用户是否免息
+     *
      * @param context
      * @return
      */
-    public boolean needAccrueInterest(TransactionContext context) {
-        return true;
+    public boolean freeAccrueInterest(TransactionContext context) {
+        LocalDate now = LocalDate.now();
+        AccountEntity account = (AccountEntity) context.getAttribute(AccountEntity.class);
+        if (account.needAccrueInterest()) {
+            return false;
+        }
+        if (account.getCurrentBalance().compareTo(ZERO) <= 0) {
+            return true;
+        }
+
+        if (account.getInterestRate().compareTo(ZERO) == 0) {
+            return true;
+        }
+
+        if (account.getWaiveInterestFlag()) {
+            if (now.isAfter(account.getWaiveOtherFeeStartDate()) && account.getWaiveInterestEndDate().isAfter(now)) {
+                return true;
+            }
+        }
+        return false;
     }
 
 
