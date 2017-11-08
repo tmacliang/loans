@@ -1,18 +1,16 @@
 package org.kelex.loans.core.service;
 
 import org.kelex.loans.core.context.TransactionContext;
-import org.kelex.loans.core.entity.AccountEntity;
-import org.kelex.loans.core.entity.BalCompValEntity;
-import org.kelex.loans.core.entity.BalProcessCtrlEntity;
-import org.kelex.loans.core.entity.TxnSummaryEntity;
+import org.kelex.loans.core.entity.*;
 import org.kelex.loans.core.repository.AccountRepository;
 import org.kelex.loans.core.repository.BalCompValRepository;
-import org.kelex.loans.core.repository.CustomerRepository;
+import org.kelex.loans.core.repository.RepositoryProxy;
 import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -40,8 +38,10 @@ public class InterestService {
         context.setAttribute(AccountEntity.class, account);
 
         List<BalCompValEntity> balCompValList = findBalCompValList(context);
-
-        List<TxnSummaryEntity> interestTxnList = accrueInterestTxn(balCompValList, context);
+        if (balCompValList.isEmpty()) {
+            return Collections.emptyList();
+        }
+        List<TxnSummaryEntity> interestTxnList = billInterest(balCompValList, context);
         return interestTxnList;
     }
 
@@ -101,7 +101,7 @@ public class InterestService {
      * @param context
      * @return
      */
-    public List<TxnSummaryEntity> accrueInterestTxn(List<BalCompValEntity> balCompValList, TransactionContext context) {
+    public List<TxnSummaryEntity> billInterest(List<BalCompValEntity> balCompValList, TransactionContext context) {
         List<TxnSummaryEntity> txnList = new ArrayList<>();
         BigDecimal totalInterests = ZERO;
         for (BalCompValEntity bcv : balCompValList) {
@@ -116,15 +116,60 @@ public class InterestService {
             }
         }
         if (totalInterests.compareTo(ZERO) > 0) {
-            TxnSummaryEntity txnSummary = createOneInterestTxn(context);
+            TxnSummaryEntity txnSummary = createMergedInterestTxn(context);
+            txnSummary.setTxnAmt(totalInterests);
+            txnSummary.setPostingAmt(totalInterests);
             txnList.add(txnSummary);
         }
 
         return txnList;
     }
 
-    public TxnSummaryEntity createOneInterestTxn(TransactionContext context) {
+    /**
+     * 创建利息交易
+     * @param context
+     * @return
+     */
+    public TxnSummaryEntity createMergedInterestTxn(TransactionContext context) {
+        AccountEntity account = (AccountEntity)context.getAttribute(AccountEntity.class);
+        CycleSummaryEntity cycleSummary = (CycleSummaryEntity)context.getAttribute(CycleSummaryEntity.class);
+
+        RepositoryProxy repositoryProxy = context.getRepository();
+        ActProcessCtrlEntity actProcessCtrl = entryService.findOneActProcessCtrl(account.getProductId(),account.getActTypeId(),repositoryProxy);
+        String txnCode = actProcessCtrl.getInterestTxnCode();
+        TxnProfileEntity txnProfileEntity = entryService.findOneTxnProfile(txnCode,repositoryProxy);
+
+        TxnSummaryId id = new TxnSummaryId();
+        id.setCycleNo(account.getCurrentCycleNo());
+        id.setAccountId(account.getAccountId());
+        id.setTxnSummaryNo(cycleSummary.getNextTxnSummaryNo());
         TxnSummaryEntity txnSummary = new TxnSummaryEntity();
+        txnSummary.setId(id);
+        txnSummary.setTxnId(context.getIdWorker().nextId());
+        txnSummary.setCustomerId(account.getCustomerId());
+        txnSummary.setIouId(0L);
+        txnSummary.setOriginalTxnId(null);
+        txnSummary.setProductId(account.getProductId());
+        txnSummary.setActTypeId(account.getActTypeId());
+        txnSummary.setGenTxnSummaryNo(0);
+        txnSummary.setTermNo(0);
+        txnSummary.setGenFeeAmt(ZERO);
+        txnSummary.setTxnCode(txnCode);
+        txnSummary.setTxnType(txnProfileEntity.getTxnType());
+        txnSummary.setTxnUuid(null);
+        txnSummary.setOrderNo(null);
+        txnSummary.setCurrencyCode(account.getCurrencyCode());
+        txnSummary.setFlowType(txnProfileEntity.getFlowType());
+        txnSummary.setCustomerGenFlag(false);
+        txnSummary.setTxnDate(LocalDate.now());
+        txnSummary.setTxnTime(LocalTime.now());
+        txnSummary.setTxnAmt(ZERO);
+        txnSummary.setPostingAmt(ZERO);
+        txnSummary.setOutstandingDeductAmt(ZERO);
+
+        cycleSummary.setNextTxnSummaryNo(cycleSummary.getNextTxnSummaryNo() + 1);
+
+        repositoryProxy.save(cycleSummary);
         return txnSummary;
     }
 

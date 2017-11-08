@@ -11,8 +11,8 @@ import org.kelex.loans.core.repository.CycleSummaryRepository;
 import org.kelex.loans.core.repository.IouReceiptRepository;
 import org.kelex.loans.core.repository.RepositoryProxy;
 import org.kelex.loans.core.util.AssertUtils;
-import org.kelex.loans.core.util.InstalmentSample;
 import org.kelex.loans.core.util.IdWorker;
+import org.kelex.loans.core.util.InstalmentSample;
 import org.kelex.loans.core.util.TransactionUtils;
 import org.springframework.stereotype.Service;
 

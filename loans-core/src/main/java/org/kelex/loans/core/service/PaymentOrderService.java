@@ -17,6 +17,7 @@ import javax.inject.Inject;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -48,6 +49,9 @@ public class PaymentOrderService extends TransactionService<PaymentOrderRequest>
 
     @Inject
     private PaymentProcessCtrlRepository paymentProcessCtrlRepository;
+
+    @Inject
+    private InterestService interestService;
 
     @Override
     protected void checkArguments(TransactionRequestContext<? extends PaymentOrderRequest> context) throws Exception {
@@ -145,8 +149,13 @@ public class PaymentOrderService extends TransactionService<PaymentOrderRequest>
         BigDecimal paymentAmt = data.getPaymentAmount().multiply(BigDecimal.ONE.scaleByPowerOfTen(currCtrl.getPower()));
         RepositoryProxy repository = context.getRepository();
 
-        if (account.getInDlqFlag()) {
-            //计算利息
+        RepositoryProxy repositoryProxy = context.getRepository();
+        //accrue interest
+        if (account.needAccrueInterest()) {
+            List<TxnSummaryEntity> interestTxnList = interestService.createInterestTxnList(account.getAccountId(), context);
+            for(TxnSummaryEntity txnSummary : interestTxnList){
+                repositoryProxy.save(txnSummary);
+            }
         }
 
         //创建还款交易
