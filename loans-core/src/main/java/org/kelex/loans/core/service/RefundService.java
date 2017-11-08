@@ -175,10 +175,10 @@ public class RefundService extends TransactionService<RefundRequest> {
         //accrue interest
         AccountEntity account = (AccountEntity) context.getAttribute(AccountEntity.class);
         if (account.needAccrueInterest()) {
-            List<TxnSummaryEntity> interestTxnList = interestService.createInterestTxnList(
-                    account.getAccountId(), context);
-//            context.getTxnSummaries().addAll(interestTxnList);
-
+            List<TxnSummaryEntity> interestTxnList = interestService.createInterestTxnList(account.getAccountId(), context);
+            for(TxnSummaryEntity txnSummary : interestTxnList){
+                repositoryProxy.save(txnSummary);
+            }
         }
 
         //update account cyclesummary bal and credit
