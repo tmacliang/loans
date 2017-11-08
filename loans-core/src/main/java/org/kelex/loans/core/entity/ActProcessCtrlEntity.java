@@ -46,6 +46,9 @@ public class ActProcessCtrlEntity extends DescriptionEntity implements Serializa
     @Column(name = "DEFAULT_GRACE_DAYS", nullable = false)
     private Integer defaultGraceDays;
 
+    @Column(name = "INTEREST_TXN_CODE", nullable = false)
+    private String interestTxnCode;
+
     public ProductId getId() {
         return id;
     }
@@ -118,6 +121,14 @@ public class ActProcessCtrlEntity extends DescriptionEntity implements Serializa
         this.defaultGraceDays = defaultGraceDays;
     }
 
+    public String getInterestTxnCode() {
+        return interestTxnCode;
+    }
+
+    public void setInterestTxnCode(String interestTxnCode) {
+        this.interestTxnCode = interestTxnCode;
+    }
+
     @Override
     public Object primaryKey() {
         return id;
@@ -134,6 +145,7 @@ public class ActProcessCtrlEntity extends DescriptionEntity implements Serializa
                 .append(",defaultInterestFreeDays = ").append(defaultInterestFreeDays)
                 .append(",defaultInterestRate = ").append(defaultInterestRate)
                 .append(",defaultTxnFeeRate = ").append(defaultTxnFeeRate)
+                .append(",interestTxnCode = ").append(interestTxnCode)
                 .append(",id = ").append(id)
                 .append("}, ").append(super.toString()).append('}');
         return sb.toString();
